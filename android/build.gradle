@@ -42,12 +42,4 @@ android {
 }
 
 
-repositories {
-    flatDir{
-        dir 'libs'
-    }
-}
-dependencies {
-    implementation project(':StarPrinterLib')
-}
 
