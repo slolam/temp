@@ -39,7 +39,7 @@ android {
         applicationId "com.getzuza.starprinter.starprinter_example"
         // You can update the following values to match your application needs. 
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -57,3 +57,13 @@ android {
 flutter {
     source '../..'
 }
+repositories {
+    flatDir{
+        dir '/Users/palashpandya/Desktop/palashworkspace/starprinter/example/android/StarPrinterLib/libs'
+    }
+}
+dependencies {
+
+    implementation project(':StarPrinterLib')
+}
+

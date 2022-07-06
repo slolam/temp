@@ -20,7 +20,6 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
-
 android {
     compileSdkVersion 31
 
@@ -30,6 +29,25 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
+    }
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+        }
+    }
+
+}
+
+
+repositories {
+    flatDir{
+        dir 'libs'
     }
 }
+dependencies {
+    implementation project(':StarPrinterLib')
+}
+
