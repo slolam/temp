@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'starprinter_platform_interface.dart';
 
+
 /// An implementation of [StarprinterPlatform] that uses method channels.
 class MethodChannelStarprinter extends StarprinterPlatform {
   /// The method channel used to interact with the native platform.

@@ -1,39 +1,48 @@
 package com.getzuza.starprinter.starprinter_example;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.util.Log;
 
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import android.content.Intent;
+import java.io.File;
+import java.io.IOException;
+
+//import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugins.GeneratedPluginRegistrant;
+//import io.flutter.plugin.common.MethodCall;
+//import io.flutter.plugin.common.MethodChannel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugin.common.MethodChannel;
 
+public class MainActivity extends FlutterActivity {
+    private static final String STAR_PRINTER = "starprinter";
 
-public class MainActivity  extends FlutterActivity  implements FlutterPlugin, MethodCallHandler {
-    /// The MethodChannel that will the communication between Flutter and native Android
-    ///
-    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-    /// when the Flutter Engine is detached from the Activity
-    private MethodChannel channel;
 
     @Override
-    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-        channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "starprinter");
-        channel.setMethodCallHandler(this);
+    public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+        GeneratedPluginRegistrant.registerWith(flutterEngine);
+        registerChannelForEducationRecordPdfGeneration(flutterEngine);
     }
 
-    @Override
-    public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        if (call.method.equals("getPlatformVersion")) {
-            result.success("Android " + android.os.Build.VERSION.RELEASE);
-        } else {
-            result.notImplemented();
-        }
-    }
 
-    @Override
-    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-        channel.setMethodCallHandler(null);
+
+    private void registerChannelForEducationRecordPdfGeneration(FlutterEngine flutterEngine) {
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), STAR_PRINTER).setMethodCallHandler(
+                new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+                        if (call.method.equals("getPriner")) {
+                            result.success("Success");
+                        }
+                    }
+                });
     }
 }
