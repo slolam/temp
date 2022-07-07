@@ -1,4 +1,4 @@
-package android.StarPrinterLib.src.main.java.com.getzuza.starprinterlib;
+package com.getzuza.starprinterlib;
 
 public enum PaperSizes {
     None (0),

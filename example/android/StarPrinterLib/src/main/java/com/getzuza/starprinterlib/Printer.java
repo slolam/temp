@@ -1,4 +1,4 @@
-package android.StarPrinterLib.src.main.java.com.getzuza.starprinterlib;
+package com.getzuza.starprinterlib;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -48,7 +48,13 @@ public class Printer {
         List<PortInfo> list = new ArrayList<>();
         for (String type : PrinterTypes) {
             try {
-                list.addAll(StarIOPort.searchPrinter(type, context));
+                ArrayList<PortInfo> data = new ArrayList<PortInfo>();
+                data.add(new PortInfo("sd","asda","asda","dsadsa"));
+                data.add(new PortInfo("sd","asda","asda","dsadsa"));
+                data.add(new PortInfo("sd","asda","asda","dsadsa"));
+                data.add(new PortInfo("sd","asda","asda","dsadsa"));
+                list.addAll(data);
+                // list.addAll(StarIOPort.searchPrinter(type, context));
             } catch (Exception e) {
                 // DO NOTHING
             }

@@ -1,4 +1,4 @@
-package android.StarPrinterLib.src.main.java.com.getzuza.starprinterlib;
+package com.getzuza.starprinterlib;
 
 import android.content.Context;
 import android.graphics.Color;
