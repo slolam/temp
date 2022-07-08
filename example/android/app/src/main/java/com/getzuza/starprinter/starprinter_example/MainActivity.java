@@ -6,20 +6,16 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 
 import androidx.annotation.NonNull;
 
+import com.getzuza.starprinterlib.Printer;
 import com.google.gson.Gson;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
 
-import static com.getzuza.starprinterlib.Printer.searchPrinters;
 
 public class MainActivity extends FlutterActivity {
     private static final String STAR_PRINTER = "starPrinter";
-    String searchPrinter;
+    Printer printer = new Printer(MainActivity.this);
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
@@ -32,8 +28,22 @@ public class MainActivity extends FlutterActivity {
                     @Override
                     public void onMethodCall(MethodCall call, MethodChannel.Result result) {
                         if (call.method.equals("searchPrinter")) {
-                            searchPrinter = new Gson().toJson(searchPrinters(MainActivity.this));
-                            result.success(searchPrinter);
+                            result.success( new Gson().toJson(printer.searchPrinters(MainActivity.this)));
+                        }else if(call.method.equals("getPrinter")){
+                            String portName = call.argument("portName");
+                            int timeOut;
+                            if( call.argument("timeOut") != null){
+                                timeOut = call.argument("timeOut") ;
+                            }else{
+                                timeOut = 0;
+                            }
+
+                            printer.getPrinter(MainActivity.this,portName,timeOut);
+                            result.success("");
+                        }else if(call.method.equals("createReceipt")){
+                            boolean text = call.argument("text");
+                            int paperSize = call.argument("paperSize");
+                            result.success(new Gson().toJson(printer.createReceipt(true,20)));
                         }
                     }
                 });

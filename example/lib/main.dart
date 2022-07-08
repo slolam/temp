@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:futter_starprinter/printer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +16,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    Printer().searchPrinter();
+    Printer().getPrinter(portName: '123.0.0',timeOut: 2000);
   }
 
   @override
@@ -24,8 +27,14 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: const Center(
-          child: Text('Running on: '),
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: (){
+            Printer().createReceipt(text: true,paperSize: 20);
+          },
+          child: const Center(
+            child: Text('Running on: '),
+          ),
         ),
       ),
     );

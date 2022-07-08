@@ -22,7 +22,7 @@ public class Printer {
 
     private static final ConcurrentHashMap<String, ExecutorService> _printerQueue = new ConcurrentHashMap<>();
 
-    public String portName;
+    public  String portName;
 
     private Context _context;
 
@@ -32,10 +32,16 @@ public class Printer {
 
     public String fontName = "Menlo";
 
-    private Printer(Context context, String portName, int timeout) {
+    Receipt receipt = new Receipt();
+
+    public Printer(Context context, String portName, int timeout) {
         _context = context;
         this.portName = portName;
         _timeout = timeout;
+    }
+
+    public Printer(Context context) {
+        _context = context;
     }
 
     public interface PrinterCallback {
@@ -44,7 +50,7 @@ public class Printer {
 
     private static final String[] PrinterTypes = new String[]{"TCP:", "BT:", "USB:"};
 
-    public static PrinterInfo[] searchPrinters(Context context) {
+    public PrinterInfo[] searchPrinters(Context context) {
         List<PortInfo> list = new ArrayList<>();
         for (String type : PrinterTypes) {
             try {
@@ -70,12 +76,13 @@ public class Printer {
         return retVal;
     }
 
-    public static Printer getPrinter(Context context, String portName, int timeout) {
+    public  Printer getPrinter(Context context, String portName, int timeout) {
         return new Printer(context, portName, timeout);
     }
 
-    public Receipt createReceipt(boolean text, int paperSize) {
-        Receipt receipt = Receipt.createReceiptFromText(_context, text, Languages.LanguageEnglish, paperSize);
+    public  Receipt createReceipt(boolean text, int paperSize) {
+        receipt = new Receipt();
+         receipt = Receipt.createReceiptFromText(_context, text, Languages.LanguageEnglish, paperSize);
         receipt.setFont(Typeface.MONOSPACE);
         receipt.setFontSize(fontSize);
 

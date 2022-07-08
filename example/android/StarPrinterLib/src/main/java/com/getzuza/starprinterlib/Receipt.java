@@ -9,7 +9,7 @@ import com.starmicronics.starioextension.ICommandBuilder;
 
 import java.nio.charset.Charset;
 
-public class Receipt {
+public  class Receipt {
 
     protected PaperSizes _size;
 
