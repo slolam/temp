@@ -5,25 +5,43 @@ import 'package:flutter/services.dart';
 class Printer {
   MethodChannel starPrinter = const MethodChannel("starPrinter");
   List<dynamic> searchPrinterData = [];
+
   searchPrinter() async {
-    searchPrinterData  =
+    searchPrinterData =
         json.decode(await (starPrinter.invokeMethod("searchPrinter")));
     return searchPrinterData;
   }
 
-  getPrinter({required String portName, required int timeOut}) async {
+  Future<String?> getPrinter(
+      {required String portName, required int timeOut}) async {
     try {
-      await (starPrinter.invokeMethod(
+      String printerID = await (starPrinter.invokeMethod(
           "getPrinter", {"portName": portName, "timeOut": timeOut}));
-      return true;
+      return printerID;
     } catch (e) {
-      return false;
+      return null;
     }
   }
 
-  createReceipt({required bool text, required int paperSize}) async {
-    Map<String, dynamic> createReceipt = await (starPrinter
-        .invokeMethod("createReceipt", {"text": text, "paperSize": paperSize}));
+  createReceipt({
+    required portName,
+    required bool text,
+    required int paperSize,
+  }) async {
+    String createReceiptID = await (starPrinter.invokeMethod("createReceipt",
+        {"text": text, "paperSize": paperSize, "portName": portName}));
     return createReceipt;
+  }
+
+  changeStyle(
+      {required portName, required String methodName, String? value}) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": methodName, "value": value});
+  }
+
+  printReceipt({required portName}) async {
+    Map<String, dynamic> printStatus =
+    json.decode(await starPrinter.invokeMethod("printReceipt", {"portName": portName}));
+    return printStatus;
   }
 }

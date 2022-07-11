@@ -13,11 +13,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String? portName;
   @override
   void initState() {
     super.initState();
     Printer().searchPrinter();
-    Printer().getPrinter(portName: '123.0.0',timeOut: 2000);
+    getPrinter();
+  }
+
+  getPrinter() async{
+    portName = await Printer().getPrinter(portName: '123.0.0',timeOut: 2000);
   }
 
   @override
@@ -27,14 +32,46 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: (){
-            Printer().createReceipt(text: true,paperSize: 20);
-          },
-          child: const Center(
-            child: Text('Running on: '),
-          ),
+        body: Column(
+          children: [
+
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                  Printer().createReceipt(text: true,paperSize: 20, portName: portName);
+                },
+                child: const Center(
+                  child: Text('createReceipt'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                  Printer().changeStyle(methodName: "setRedColor",portName:portName );
+                },
+                child: const Center(
+                  child: Text('setRedColor'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                  Printer().printReceipt(portName:portName);
+                },
+                child: const Center(
+                  child: Text('printReceipt'),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

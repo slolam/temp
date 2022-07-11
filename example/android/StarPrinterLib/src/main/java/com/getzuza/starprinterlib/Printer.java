@@ -32,8 +32,6 @@ public class Printer {
 
     public String fontName = "Menlo";
 
-    Receipt receipt = new Receipt();
-
     public Printer(Context context, String portName, int timeout) {
         _context = context;
         this.portName = portName;
@@ -54,13 +52,13 @@ public class Printer {
         List<PortInfo> list = new ArrayList<>();
         for (String type : PrinterTypes) {
             try {
-                ArrayList<PortInfo> data = new ArrayList<PortInfo>();
+               /* ArrayList<PortInfo> data = new ArrayList<PortInfo>();
                 data.add(new PortInfo("sd","asda","asda","dsadsa"));
                 data.add(new PortInfo("sd","asda","asda","dsadsa"));
                 data.add(new PortInfo("sd","asda","asda","dsadsa"));
                 data.add(new PortInfo("sd","asda","asda","dsadsa"));
-                list.addAll(data);
-                // list.addAll(StarIOPort.searchPrinter(type, context));
+                list.addAll(data);*/
+                 list.addAll(StarIOPort.searchPrinter(type, context));
             } catch (Exception e) {
                 // DO NOTHING
             }
@@ -80,8 +78,8 @@ public class Printer {
         return new Printer(context, portName, timeout);
     }
 
-    public  Receipt createReceipt(boolean text, int paperSize) {
-        receipt = new Receipt();
+    public Receipt createReceipt(boolean text, int paperSize) {
+        Receipt receipt;
          receipt = Receipt.createReceiptFromText(_context, text, Languages.LanguageEnglish, paperSize);
         receipt.setFont(Typeface.MONOSPACE);
         receipt.setFontSize(fontSize);

@@ -67,6 +67,7 @@ public  class Receipt {
     }
 
     public void setFontName(String name) {
+
     }
 
     public void setFontSize(float size) {
