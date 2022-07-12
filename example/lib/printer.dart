@@ -30,7 +30,7 @@ class Printer {
   }) async {
     String createReceiptID = await (starPrinter.invokeMethod("createReceipt",
         {"text": text, "paperSize": paperSize, "portName": portName}));
-    return createReceipt;
+    return createReceiptID;
   }
 
   changeStyle(
