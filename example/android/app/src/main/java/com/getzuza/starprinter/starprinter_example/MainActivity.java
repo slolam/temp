@@ -1,6 +1,9 @@
 package com.getzuza.starprinter.starprinter_example;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
@@ -111,6 +114,13 @@ public class MainActivity extends FlutterActivity {
 
                                         case "addLine":
                                             receipt.addLine();
+                                            break;
+                                        case "addImage":
+                                            byte[] bytes = call.argument("bytes");
+                                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0,
+                                                    bytes.length);
+                                            int width = call.argument("width");
+                                            receipt.addImage(bitmap,width);
                                             break;
                                     }
                                     receiptHashMap.put(portName,receipt);

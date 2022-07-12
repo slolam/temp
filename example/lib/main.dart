@@ -71,6 +71,17 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: (){
+                },
+                child: const Center(
+                  child: Text('addImage'),
+                ),
+              ),
+            ),
           ],
         ),
       ),
