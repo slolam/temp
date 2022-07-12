@@ -42,3 +42,18 @@ android {
 
 }
 
+<<<<<<< Updated upstream
+=======
+
+/*
+repositories {
+    flatDir{
+        dir 'libs'
+    }
+}
+dependencies {
+    implementation project(':StarPrinterLib')
+}
+*/
+
+>>>>>>> Stashed changes
