@@ -13,6 +13,7 @@
   [starPrinterChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
 
       if ([call.method  isEqual: @"searchPrinter"]) {
+          
           result(@("searchPrinter"));
       }else if([call.method  isEqual: @"getPrinter"]){
           result(@("getPrinter"));
