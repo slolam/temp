@@ -1,6 +1,6 @@
 #import "AppDelegate.h"
 #import "GeneratedPluginRegistrant.h"
-
+#import "Printer.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
@@ -9,10 +9,14 @@
   FlutterMethodChannel* starPrinterChannel = [FlutterMethodChannel
                                           methodChannelWithName:@"starPrinter"
                                           binaryMessenger:controller.binaryMessenger];
+    Printer *printer = [Printer alloc];
+
 
   [starPrinterChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
 
       if ([call.method  isEqual: @"searchPrinter"]) {
+        
+        //  NSArray<PrinterInfo *> *dd =   [printer searchPrinters];
           
           result(@("searchPrinter"));
       }else if([call.method  isEqual: @"getPrinter"]){

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-
 import 'package:flutter/services.dart';
 
 class Printer {
@@ -35,16 +34,92 @@ class Printer {
     return createReceiptID;
   }
 
-  changeStyle(
-      {required portName,
-      required String methodName,
-      String? value,
-      Uint8List? bitmap}) async {
+  addAlignLeft({
+    required portName,
+  }) async {
     await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": methodName, "value": value});
+        {"portName": portName, "methodName": "addAlignLeft",});
   }
 
-  addImage({required portName,required Uint8List? bytes, required int width}) async {
+  addAlignRight({
+    required portName,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "addAlignRight"});
+  }
+
+  addAlignCenter({
+    required portName,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "addAlignCenter"});
+  }
+
+  setBlackColor({
+    required portName,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "setBlackColor",});
+  }
+
+  setRedColor({
+    required portName,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "setRedColor",});
+  }
+
+  addText({
+    required portName,
+    String? value,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "addText","value": value});
+  }
+
+  addDoubleText({
+    required portName,
+    String? value,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "addDoubleText","value": value});
+  }
+
+  addBoldText({
+    required portName,
+    String? value,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "addBoldText","value": value});
+  }
+
+  addUnderlinedText({
+    required portName,
+    String? value,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "addUnderlinedText","value": value});
+  }
+
+  addInverseText({
+    required portName,
+    String? value,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "addInverseText","value": value});
+  }
+
+  addLine({
+    required portName,
+  }) async {
+    await starPrinter.invokeMethod("changeStyle",
+        {"portName": portName, "methodName": "addLine",});
+  }
+
+  addImage(
+      {required portName,
+      required Uint8List? bytes,
+      required int width}) async {
     await starPrinter.invokeMethod("changeStyle", {
       "portName": portName,
       "methodName": "addImage",

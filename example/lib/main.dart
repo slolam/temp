@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: (){
-                  Printer().changeStyle(methodName: "setRedColor",portName:portName );
+                  Printer().addAlignLeft(portName:portName );
                 },
                 child: const Center(
                   child: Text('setRedColor'),
@@ -82,6 +82,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
+
           ],
         ),
       ),
