@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ class Printer {
   searchPrinter() async {
     searchPrinterData =
         json.decode(await (starPrinter.invokeMethod("searchPrinter")));
+    print("abcd=>>>> "+searchPrinterData.toString());
     return searchPrinterData;
   }
 
@@ -37,36 +39,42 @@ class Printer {
   addAlignLeft({
     required portName,
   }) async {
-    await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addAlignLeft",});
+    await starPrinter.invokeMethod("changeStyle", {
+      "portName": portName,
+      "methodName": "addAlignLeft",
+    });
   }
 
   addAlignRight({
     required portName,
   }) async {
-    await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addAlignRight"});
+    await starPrinter.invokeMethod(
+        "changeStyle", {"portName": portName, "methodName": "addAlignRight"});
   }
 
   addAlignCenter({
     required portName,
   }) async {
-    await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addAlignCenter"});
+    await starPrinter.invokeMethod(
+        "changeStyle", {"portName": portName, "methodName": "addAlignCenter"});
   }
 
   setBlackColor({
     required portName,
   }) async {
-    await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "setBlackColor",});
+    await starPrinter.invokeMethod("changeStyle", {
+      "portName": portName,
+      "methodName": "setBlackColor",
+    });
   }
 
   setRedColor({
     required portName,
   }) async {
-    await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "setRedColor",});
+    await starPrinter.invokeMethod("changeStyle", {
+      "portName": portName,
+      "methodName": "setRedColor",
+    });
   }
 
   addText({
@@ -74,7 +82,7 @@ class Printer {
     String? value,
   }) async {
     await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addText","value": value});
+        {"portName": portName, "methodName": "addText", "value": value});
   }
 
   addDoubleText({
@@ -82,7 +90,7 @@ class Printer {
     String? value,
   }) async {
     await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addDoubleText","value": value});
+        {"portName": portName, "methodName": "addDoubleText", "value": value});
   }
 
   addBoldText({
@@ -90,15 +98,18 @@ class Printer {
     String? value,
   }) async {
     await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addBoldText","value": value});
+        {"portName": portName, "methodName": "addBoldText", "value": value});
   }
 
   addUnderlinedText({
     required portName,
     String? value,
   }) async {
-    await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addUnderlinedText","value": value});
+    await starPrinter.invokeMethod("changeStyle", {
+      "portName": portName,
+      "methodName": "addUnderlinedText",
+      "value": value
+    });
   }
 
   addInverseText({
@@ -106,14 +117,16 @@ class Printer {
     String? value,
   }) async {
     await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addInverseText","value": value});
+        {"portName": portName, "methodName": "addInverseText", "value": value});
   }
 
   addLine({
     required portName,
   }) async {
-    await starPrinter.invokeMethod("changeStyle",
-        {"portName": portName, "methodName": "addLine",});
+    await starPrinter.invokeMethod("changeStyle", {
+      "portName": portName,
+      "methodName": "addLine",
+    });
   }
 
   addImage(

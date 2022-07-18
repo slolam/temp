@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     Printer().searchPrinter();
-    getPrinter();
+   // getPrinter();
   }
 
   getPrinter() async{
