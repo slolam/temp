@@ -11,7 +11,7 @@ class Printer {
   searchPrinter() async {
     searchPrinterData =
         json.decode(await (starPrinter.invokeMethod("searchPrinter")));
-    print("abcd=>>>> "+searchPrinterData.toString());
+    print("searchPrinter---> " + searchPrinterData.toString());
     return searchPrinterData;
   }
 
@@ -20,6 +20,7 @@ class Printer {
     try {
       String printerID = await (starPrinter.invokeMethod(
           "getPrinter", {"portName": portName, "timeOut": timeOut}));
+      print("getPrinter--->" + printerID);
       return printerID;
     } catch (e) {
       return null;
@@ -130,9 +131,7 @@ class Printer {
   }
 
   addImage(
-      {required portName,
-      required Uint8List? bytes,
-      required int width}) async {
+      {required portName, required Uint8List? bytes, int width = 0}) async {
     await starPrinter.invokeMethod("changeStyle", {
       "portName": portName,
       "methodName": "addImage",

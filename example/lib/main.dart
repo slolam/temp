@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:futter_starprinter/printer.dart';
 
 void main() {
@@ -18,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     Printer().searchPrinter();
-   // getPrinter();
+    getPrinter();
   }
 
   getPrinter() async{
@@ -55,7 +58,7 @@ class _MyAppState extends State<MyApp> {
                   Printer().addAlignLeft(portName:portName );
                 },
                 child: const Center(
-                  child: Text('setRedColor'),
+                  child: Text('addAlignLeft'),
                 ),
               ),
             ),
@@ -75,7 +78,13 @@ class _MyAppState extends State<MyApp> {
               padding: const EdgeInsets.all(50.0),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: (){
+                onTap: () async{
+                  String testImage = "https://images.pexels.com/photos/3521937/pexels-photo-3521937.jpeg?auto=compress&cs=tinysrgb&h=566.525&fit=crop&w=633.175&dpr=1";
+                  Uint8List bytes = (await NetworkAssetBundle(Uri.parse(testImage))
+                      .load(testImage))
+                      .buffer
+                      .asUint8List();
+                  Printer().addImage(portName: portName, bytes: bytes);
                 },
                 child: const Center(
                   child: Text('addImage'),
