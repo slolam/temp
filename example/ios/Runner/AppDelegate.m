@@ -115,11 +115,22 @@
             UIImage *imageData = [UIImage imageWithData:imgBytes.data];
             [receipt addImage:imageData width:width];
             [receiptDictionary setValue:receipt forKey:portName];
+            
+        }else if([call.method  isEqual: @"addBarcode"]){
+            NSString *portName = call.arguments[@"portName"];
+            NSString *value = call.arguments[@"value"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            int height = call.arguments[@"height"];
+            [receipt addBarcode:value height:height];
+            [receiptDictionary setValue:receipt forKey:portName];
+            
         }else if([call.method  isEqual: @"printReceipt"]){
             NSString *portName = call.arguments[@"portName"];
+            int delay = call.arguments[@"delay"];
+            int retry = call.arguments[@"retry"];
             Printer *printer = [printerDictionary objectForKey:portName];
             Receipt *receipt = [receiptDictionary objectForKey:portName];
-            [printer printReceipt:receipt withDelay:0 andRetry:1 onSuccess:^(PrinterStatus *printerStatus) {
+            [printer printReceipt:receipt withDelay:delay andRetry:retry onSuccess:^(PrinterStatus *printerStatus) {
                 NSData *data = [NSJSONSerialization dataWithJSONObject:printerStatus options:0 error:nil];
                 NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 result(printeResult);

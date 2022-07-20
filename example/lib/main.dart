@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  _printer?.printReceipt();
+                  _printer?.printReceipt(delay: 0,retry: 1);
                 },
                 child: const Center(
                   child: Text('printReceipt'),

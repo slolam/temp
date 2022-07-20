@@ -23,7 +23,7 @@ class Printer {
   static Future<Printer?> getPrinter(
       {required String portName, required int timeOut}) async {
     try {
-       MethodChannel starPrinter = const MethodChannel("starPrinter");
+      MethodChannel starPrinter = const MethodChannel("starPrinter");
       String _portName = await (starPrinter.invokeMethod(
           "getPrinter", {"portName": portName, "timeOut": timeOut}));
       if (kDebugMode) {
@@ -117,9 +117,17 @@ class Printer {
         "addImage", {"portName": portName, "bytes": bytes, "width": width});
   }
 
-  printReceipt() async {
+  addBarcode({required String? value, required int height}) async {
+    await _starPrinter.invokeMethod("addBarcode", {
+      "value": value,
+      "height": height,
+    });
+  }
+
+  printReceipt({required int delay, required int retry}) async {
     Map<String, dynamic> printStatus = json.decode(await _starPrinter
-        .invokeMethod("printReceipt", {"portName": portName}));
+        .invokeMethod("printReceipt",
+            {"portName": portName, "delay": delay, "retry": retry}));
     return printStatus;
   }
 }

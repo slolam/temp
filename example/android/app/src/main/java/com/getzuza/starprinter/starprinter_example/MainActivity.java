@@ -133,10 +133,12 @@ public class MainActivity extends FlutterActivity {
 
                             case "printReceipt":
                                 portName = call.argument("portName");
+                                int delay = call.argument("delay");
+                                int retry = call.argument("retry");
                                 printer = printerHashMap.get(portName);
                                 receipt = receiptHashMap.get(portName);
                                 if(printer != null && receipt != null){
-                                    printer.printReceipt(receipt,0,1,status -> {
+                                    printer.printReceipt(receipt,delay,retry,status -> {
                                         result.success(new Gson().toJson(status));
                                     });
                                 }
