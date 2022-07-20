@@ -17,15 +17,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String? portName;
+  Printer? _printer = Printer();
   @override
   void initState() {
     super.initState();
-    Printer().searchPrinter();
-    getPrinter();
+    _printer?.searchPrinter();
+    setPrinter();
   }
 
-  getPrinter() async{
-    portName = await Printer().getPrinter(portName: '123.0.0',timeOut: 2000);
+  setPrinter() async {
+    _printer = await Printer.getPrinter(portName: '123.0.0', timeOut: 2000);
   }
 
   @override
@@ -37,13 +38,15 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-
             Padding(
               padding: const EdgeInsets.all(50.0),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: (){
-                  Printer().createReceipt(text: true,paperSize: 20, portName: portName);
+                onTap: () {
+                  _printer?.createReceipt(
+                    text: true,
+                    paperSize: 20,
+                  );
                 },
                 child: const Center(
                   child: Text('createReceipt'),
@@ -54,8 +57,8 @@ class _MyAppState extends State<MyApp> {
               padding: const EdgeInsets.all(50.0),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: (){
-                  Printer().addAlignLeft(portName:portName );
+                onTap: () {
+                  _printer?.addAlignLeft();
                 },
                 child: const Center(
                   child: Text('addAlignLeft'),
@@ -66,8 +69,8 @@ class _MyAppState extends State<MyApp> {
               padding: const EdgeInsets.all(50.0),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: (){
-                  Printer().printReceipt(portName:portName);
+                onTap: () {
+                  _printer?.printReceipt();
                 },
                 child: const Center(
                   child: Text('printReceipt'),
@@ -78,20 +81,21 @@ class _MyAppState extends State<MyApp> {
               padding: const EdgeInsets.all(50.0),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () async{
-                  String testImage = "https://images.pexels.com/photos/3521937/pexels-photo-3521937.jpeg?auto=compress&cs=tinysrgb&h=566.525&fit=crop&w=633.175&dpr=1";
-                  Uint8List bytes = (await NetworkAssetBundle(Uri.parse(testImage))
-                      .load(testImage))
-                      .buffer
-                      .asUint8List();
-                  Printer().addImage(portName: portName, bytes: bytes);
+                onTap: () async {
+                  String testImage =
+                      "https://images.pexels.com/photos/3521937/pexels-photo-3521937.jpeg?auto=compress&cs=tinysrgb&h=566.525&fit=crop&w=633.175&dpr=1";
+                  Uint8List bytes =
+                      (await NetworkAssetBundle(Uri.parse(testImage))
+                              .load(testImage))
+                          .buffer
+                          .asUint8List();
+                  _printer?.addImage(bytes: bytes);
                 },
                 child: const Center(
                   child: Text('addImage'),
                 ),
               ),
             ),
-
           ],
         ),
       ),
