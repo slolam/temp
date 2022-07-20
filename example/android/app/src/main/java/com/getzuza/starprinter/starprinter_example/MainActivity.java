@@ -122,6 +122,10 @@ public class MainActivity extends FlutterActivity {
                                             int width = call.argument("width");
                                             receipt.addImage(bitmap,width);
                                             break;
+                                        case "addBarcode":
+                                            String height = call.argument("height");
+                                            receipt.addBarcode(value,height);
+                                            break;
                                     }
                                     receiptHashMap.put(portName,receipt);
                                 }

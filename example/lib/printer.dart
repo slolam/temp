@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class Printer {
-  MethodChannel _starPrinter = MethodChannel("starPrinter");
+  final MethodChannel _starPrinter = const MethodChannel("starPrinter");
   List<dynamic> searchPrinterData = [];
   String? portName;
 

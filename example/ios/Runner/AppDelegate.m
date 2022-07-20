@@ -43,92 +43,92 @@
                 result(portName);
             }];
             
-        }else if([call.method  isEqual: @"changeStyle"]){
+        }else if([call.method  isEqual: @"addAlignLeft"]){
             NSString *portName = call.arguments[@"portName"];
-            NSString *methodName = call.arguments[@"methodName"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt addAlignLeft];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"addAlignRight"]){
+            NSString *portName = call.arguments[@"portName"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt addAlignRight];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"addAlignCenter"]){
+            NSString *portName = call.arguments[@"portName"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt addAlignCenter];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"setBlackColor"]){
+            NSString *portName = call.arguments[@"portName"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt setBlackColor];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"setRedColor"]){
+            NSString *portName = call.arguments[@"portName"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt setRedColor];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"addText"]){
+            NSString *portName = call.arguments[@"portName"];
             NSString *value = call.arguments[@"value"];
             Receipt *receipt = [receiptDictionary objectForKey:portName];
-            NSArray *items = @[@"addAlignLeft", @"addAlignRight", @"addAlignCenter",@"setBlackColor",@"setRedColor",@"addText",@"addDoubleText",@"addBoldText",@"addUnderlinedText",@"addInverseText",@"addLine",@"addImage"];
-            int item = [items indexOfObject:methodName];
-            if (receipt != NULL) {
-                switch (item) {
-                    case 0:
-                    {
-                        [receipt addAlignLeft];
-                    }
-                        break;
-                    case 1:
-                    {
-                        [receipt addAlignRight];
-                    }
-                        break;
-                    case 2:
-                    {
-                        [receipt addAlignCenter];
-                    }
-                        break;
-                    case 3:
-                    {
-                        [receipt setBlackColor];
-                    }
-                        break;
-                        
-                    case 4:
-                    {
-                        [receipt setRedColor];
-                    }
-                        break;
-                    case 5:
-                    {
-                        [receipt addText:value];
-                    }
-                        break;
-                    case 6:
-                    {
-                        [receipt addDoubleText:value];
-                    }
-                        break;
-                    case 7:
-                    {
-                        [receipt addBoldText:value];
-                    }
-                        break;
-                    case 8:
-                    {
-                        [receipt addUnderlinedText:value];
-                    }
-                        break;
-                        
-                    case 9:
-                    {
-                        [receipt addInverseText:value];
-                    }
-                        break;
-                    case 10:
-                    {
-                        [receipt addLine];
-                    }
-                        break;
-                    case 11:
-                    {
-                        FlutterStandardTypedData *imgBytes = call.arguments[@"bytes"];
-                        
-                        int width = call.arguments[@"width"];
-            
-                        UIImage *imageData = [UIImage imageWithData:imgBytes.data];
-                        
-                        [receipt addImage:imageData width:width];
-                        
-                        
-                    }
-                        break;
-                        
-                }
-            }
-            
-            //result(@("changeStyle"));
+            [receipt addText:value];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"addDoubleText"]){
+            NSString *portName = call.arguments[@"portName"];
+            NSString *value = call.arguments[@"value"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt addDoubleText:value];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"addBoldText"]){
+            NSString *portName = call.arguments[@"portName"];
+            NSString *value = call.arguments[@"value"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt addBoldText:value];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"addUnderlinedText"]){
+            NSString *portName = call.arguments[@"portName"];
+            NSString *value = call.arguments[@"value"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt addUnderlinedText:value];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"addLine"]){
+            NSString *portName = call.arguments[@"portName"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [receipt addLine];
+            [receiptDictionary setValue:receipt forKey:portName];
+
+        }else if([call.method  isEqual: @"addImage"]){
+            NSString *portName = call.arguments[@"portName"];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            FlutterStandardTypedData *imgBytes = call.arguments[@"bytes"];
+            int width = call.arguments[@"width"];
+            UIImage *imageData = [UIImage imageWithData:imgBytes.data];
+            [receipt addImage:imageData width:width];
+            [receiptDictionary setValue:receipt forKey:portName];
         }else if([call.method  isEqual: @"printReceipt"]){
-            result(@("printReceipt"));
+            NSString *portName = call.arguments[@"portName"];
+            Printer *printer = [printerDictionary objectForKey:portName];
+            Receipt *receipt = [receiptDictionary objectForKey:portName];
+            [printer printReceipt:receipt withDelay:0 andRetry:1 onSuccess:^(PrinterStatus *printerStatus) {
+                NSData *data = [NSJSONSerialization dataWithJSONObject:printerStatus options:0 error:nil];
+                NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                result(printeResult);
+            } onFail:^(PrinterStatus *printerStatus) {
+                NSData *data = [NSJSONSerialization dataWithJSONObject:printerStatus options:0 error:nil];
+                NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                result(printeResult);
+            }];
+
         }
         
     }];
