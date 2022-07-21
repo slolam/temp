@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.android.tools.build:gradle:4.1.0'
     }
 }
 
@@ -42,18 +42,17 @@ android {
 
 }
 
-<<<<<<< Updated upstream
-=======
 
-/*
+
 repositories {
     flatDir{
         dir 'libs'
+
     }
 }
 dependencies {
-    implementation project(':StarPrinterLib')
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation project(path: ':StarPrinterLib')
+    // implementation project(path: ':StarPrinterLib')
 }
-*/
 
->>>>>>> Stashed changes

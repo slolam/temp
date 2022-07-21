@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:futter_starprinter/printer.dart';
+import 'package:starprinter/printer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,12 +21,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _printer?.searchPrinter();
+   // _printer?.getPlatform();
+
+  //  _printer?.searchPrinter();
     setPrinter();
   }
 
   setPrinter() async {
     _printer = await Printer.getPrinter(portName: '123.0.0', timeOut: 2000);
+    print("_printer =>>>>${_printer?.portName}");
   }
 
   @override
