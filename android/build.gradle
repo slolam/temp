@@ -47,7 +47,7 @@ android {
 repositories {
     flatDir{
         dir 'libs'
-
+        dirs project(':StarPrinterLib').file('libs')
     }
 }
 dependencies {
