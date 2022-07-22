@@ -1,11 +1,10 @@
-package com.getzuza.starprinterlib;
+package com.getzuza.starprinter.starprinter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -13,12 +12,8 @@ import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.AlignmentSpan;
 import android.text.style.BackgroundColorSpan;
-import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
-import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.text.style.TypefaceSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.util.TypedValue;

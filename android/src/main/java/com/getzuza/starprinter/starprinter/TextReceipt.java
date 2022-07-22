@@ -1,7 +1,6 @@
-package com.getzuza.starprinterlib;
+package com.getzuza.starprinter.starprinter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.StarIoExt;

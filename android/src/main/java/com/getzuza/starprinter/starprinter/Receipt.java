@@ -1,15 +1,12 @@
-package com.getzuza.starprinterlib;
+package com.getzuza.starprinter.starprinter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.media.Image;
 
 import com.starmicronics.starioextension.ICommandBuilder;
 
-import java.nio.charset.Charset;
-
-public  class Receipt {
+public class Receipt {
 
     protected PaperSizes _size;
 
@@ -67,7 +64,6 @@ public  class Receipt {
     }
 
     public void setFontName(String name) {
-
     }
 
     public void setFontSize(float size) {

@@ -1,4 +1,4 @@
-package com.getzuza.starprinterlib;
+package com.getzuza.starprinter.starprinter;
 
 public enum PaperSizes {
     None (0),

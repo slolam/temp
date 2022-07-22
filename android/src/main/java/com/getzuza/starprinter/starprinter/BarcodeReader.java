@@ -1,7 +1,6 @@
-package com.getzuza.starprinterlib;
+package com.getzuza.starprinter.starprinter;
 
 import android.content.Context;
-import android.graphics.Color;
 
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarResultCode;

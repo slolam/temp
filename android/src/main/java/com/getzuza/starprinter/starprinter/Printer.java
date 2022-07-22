@@ -1,4 +1,4 @@
-package com.getzuza.starprinterlib;
+package com.getzuza.starprinter.starprinter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -22,7 +22,7 @@ public class Printer {
 
     private static final ConcurrentHashMap<String, ExecutorService> _printerQueue = new ConcurrentHashMap<>();
 
-    public  String portName;
+    public String portName;
 
     private Context _context;
 
@@ -37,28 +37,21 @@ public class Printer {
         this.portName = portName;
         _timeout = timeout;
     }
-
     public Printer(Context context) {
         _context = context;
     }
-
+    
     public interface PrinterCallback {
         void onResponse(PrinterStatus status);
     }
 
     private static final String[] PrinterTypes = new String[]{"TCP:", "BT:", "USB:"};
 
-    public PrinterInfo[] searchPrinters(Context context) {
+    public static PrinterInfo[] searchPrinters(Context context) {
         List<PortInfo> list = new ArrayList<>();
         for (String type : PrinterTypes) {
             try {
-               /* ArrayList<PortInfo> data = new ArrayList<PortInfo>();
-                data.add(new PortInfo("sd","asda","asda","dsadsa"));
-                data.add(new PortInfo("sd","asda","asda","dsadsa"));
-                data.add(new PortInfo("sd","asda","asda","dsadsa"));
-                data.add(new PortInfo("sd","asda","asda","dsadsa"));
-                list.addAll(data);*/
-                 list.addAll(StarIOPort.searchPrinter(type, context));
+                list.addAll(StarIOPort.searchPrinter(type, context));
             } catch (Exception e) {
                 // DO NOTHING
             }
@@ -74,13 +67,12 @@ public class Printer {
         return retVal;
     }
 
-    public  Printer getPrinter(Context context, String portName, int timeout) {
+    public static Printer getPrinter(Context context, String portName, int timeout) {
         return new Printer(context, portName, timeout);
     }
 
     public Receipt createReceipt(boolean text, int paperSize) {
-        Receipt receipt;
-         receipt = Receipt.createReceiptFromText(_context, text, Languages.LanguageEnglish, paperSize);
+        Receipt receipt = Receipt.createReceiptFromText(_context, text, Languages.LanguageEnglish, paperSize);
         receipt.setFont(Typeface.MONOSPACE);
         receipt.setFontSize(fontSize);
 
