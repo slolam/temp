@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,15 +15,6 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		A9E4394B6E896ADAF60592B6 /* libPods-Runner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D4A709FE48C0987349AE303 /* libPods-Runner.a */; };
-		C281A352287ECA4F00C359A4 /* Receipt.m in Sources */ = {isa = PBXBuildFile; fileRef = C281A345287ECA4F00C359A4 /* Receipt.m */; };
-		C281A353287ECA4F00C359A4 /* BarcodeReader.m in Sources */ = {isa = PBXBuildFile; fileRef = C281A347287ECA4F00C359A4 /* BarcodeReader.m */; };
-		C281A354287ECA4F00C359A4 /* GraphicReceipt.m in Sources */ = {isa = PBXBuildFile; fileRef = C281A34A287ECA4F00C359A4 /* GraphicReceipt.m */; };
-		C281A355287ECA4F00C359A4 /* Printer.m in Sources */ = {isa = PBXBuildFile; fileRef = C281A34C287ECA4F00C359A4 /* Printer.m */; };
-		C281A356287ECA4F00C359A4 /* TextReceipt.m in Sources */ = {isa = PBXBuildFile; fileRef = C281A34F287ECA4F00C359A4 /* TextReceipt.m */; };
-		C281A396287ECA9800C359A4 /* StarIO_Extension.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C281A393287ECA9700C359A4 /* StarIO_Extension.xcframework */; };
-		C281A397287ECA9800C359A4 /* StarIO.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C281A394287ECA9700C359A4 /* StarIO.xcframework */; };
-		C281A398287ECA9800C359A4 /* StarIODeviceSetting.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C281A395287ECA9700C359A4 /* StarIODeviceSetting.xcframework */; };
-		C281A39B287ECEAA00C359A4 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C281A39A287ECEAA00C359A4 /* CoreBluetooth.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,21 +47,6 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B33D1C55564E5755B4E4ECC6 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-		C281A345287ECA4F00C359A4 /* Receipt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Receipt.m; sourceTree = "<group>"; };
-		C281A346287ECA4F00C359A4 /* Printer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Printer.h; sourceTree = "<group>"; };
-		C281A347287ECA4F00C359A4 /* BarcodeReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarcodeReader.m; sourceTree = "<group>"; };
-		C281A348287ECA4F00C359A4 /* StarPrinter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StarPrinter.h; sourceTree = "<group>"; };
-		C281A349287ECA4F00C359A4 /* TextReceipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextReceipt.h; sourceTree = "<group>"; };
-		C281A34A287ECA4F00C359A4 /* GraphicReceipt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphicReceipt.m; sourceTree = "<group>"; };
-		C281A34B287ECA4F00C359A4 /* Receipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Receipt.h; sourceTree = "<group>"; };
-		C281A34C287ECA4F00C359A4 /* Printer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Printer.m; sourceTree = "<group>"; };
-		C281A34D287ECA4F00C359A4 /* BarcodeReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarcodeReader.h; sourceTree = "<group>"; };
-		C281A34E287ECA4F00C359A4 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
-		C281A34F287ECA4F00C359A4 /* TextReceipt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextReceipt.m; sourceTree = "<group>"; };
-		C281A351287ECA4F00C359A4 /* GraphicReceipt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicReceipt.h; sourceTree = "<group>"; };
-		C281A393287ECA9700C359A4 /* StarIO_Extension.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = StarIO_Extension.xcframework; sourceTree = "<group>"; };
-		C281A394287ECA9700C359A4 /* StarIO.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = StarIO.xcframework; sourceTree = "<group>"; };
-		C281A395287ECA9700C359A4 /* StarIODeviceSetting.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = StarIODeviceSetting.xcframework; sourceTree = "<group>"; };
 		C281A39A287ECEAA00C359A4 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		D740A9A132A9D6CDA8137A82 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		E1FA4D8DF2C1C08B26DF0718 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
@@ -81,10 +57,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C281A396287ECA9800C359A4 /* StarIO_Extension.xcframework in Frameworks */,
-				C281A398287ECA9800C359A4 /* StarIODeviceSetting.xcframework in Frameworks */,
-				C281A39B287ECEAA00C359A4 /* CoreBluetooth.framework in Frameworks */,
-				C281A397287ECA9800C359A4 /* StarIO.xcframework in Frameworks */,
 				A9E4394B6E896ADAF60592B6 /* libPods-Runner.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -126,7 +98,6 @@
 			isa = PBXGroup;
 			children = (
 				C281A392287ECA8300C359A4 /* Framwork */,
-				C281A344287ECA4F00C359A4 /* StarPrinter */,
 				7AFFD8ED1D35381100E5BB4D /* AppDelegate.h */,
 				7AFFD8EE1D35381100E5BB4D /* AppDelegate.m */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
@@ -155,35 +126,12 @@
 				B33D1C55564E5755B4E4ECC6 /* Pods-Runner.release.xcconfig */,
 				D740A9A132A9D6CDA8137A82 /* Pods-Runner.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		C281A344287ECA4F00C359A4 /* StarPrinter */ = {
-			isa = PBXGroup;
-			children = (
-				C281A345287ECA4F00C359A4 /* Receipt.m */,
-				C281A346287ECA4F00C359A4 /* Printer.h */,
-				C281A347287ECA4F00C359A4 /* BarcodeReader.m */,
-				C281A348287ECA4F00C359A4 /* StarPrinter.h */,
-				C281A349287ECA4F00C359A4 /* TextReceipt.h */,
-				C281A34A287ECA4F00C359A4 /* GraphicReceipt.m */,
-				C281A34B287ECA4F00C359A4 /* Receipt.h */,
-				C281A34C287ECA4F00C359A4 /* Printer.m */,
-				C281A34D287ECA4F00C359A4 /* BarcodeReader.h */,
-				C281A34E287ECA4F00C359A4 /* Runner-Bridging-Header.h */,
-				C281A34F287ECA4F00C359A4 /* TextReceipt.m */,
-				C281A351287ECA4F00C359A4 /* GraphicReceipt.h */,
-			);
-			path = StarPrinter;
 			sourceTree = "<group>";
 		};
 		C281A392287ECA8300C359A4 /* Framwork */ = {
 			isa = PBXGroup;
 			children = (
-				C281A393287ECA9700C359A4 /* StarIO_Extension.xcframework */,
-				C281A394287ECA9700C359A4 /* StarIO.xcframework */,
-				C281A395287ECA9700C359A4 /* StarIODeviceSetting.xcframework */,
 			);
 			path = Framwork;
 			sourceTree = "<group>";
@@ -325,13 +273,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C281A352287ECA4F00C359A4 /* Receipt.m in Sources */,
-				C281A356287ECA4F00C359A4 /* TextReceipt.m in Sources */,
-				C281A354287ECA4F00C359A4 /* GraphicReceipt.m in Sources */,
-				C281A353287ECA4F00C359A4 /* BarcodeReader.m in Sources */,
 				978B8F6F1D3862AE00F588F7 /* AppDelegate.m in Sources */,
 				97C146F31CF9000F007C117D /* main.m in Sources */,
-				C281A355287ECA4F00C359A4 /* Printer.m in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

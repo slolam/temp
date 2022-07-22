@@ -17,7 +17,9 @@ A new Flutter plugin project.
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
+  s.framework = 'CoreBluetooth'
 
   # Flutter.framework does not contain a i386 slice.
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386','VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
+  s.vendored_frameworks = 'StarIO_Extension.xcframework','StarIO.xcframework','StarIODeviceSetting.xcframework'
 end
