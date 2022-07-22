@@ -9,8 +9,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.getzuza.starprinterlib.Printer;
-import com.getzuza.starprinterlib.Receipt;
 import com.google.gson.Gson;
 
 import java.util.HashMap;

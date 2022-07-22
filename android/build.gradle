@@ -47,12 +47,11 @@ android {
 repositories {
     flatDir{
         dir 'libs'
-        dirs project(':StarPrinterLib').file('libs')
     }
 }
 dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
-    implementation project(':StarPrinterLib')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
 }
 
