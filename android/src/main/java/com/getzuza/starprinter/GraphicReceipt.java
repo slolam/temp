@@ -1,4 +1,4 @@
-package com.getzuza.starprinter.starprinter;
+package com.getzuza.starprinter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -195,9 +195,9 @@ public class GraphicReceipt extends Receipt {
     }
 
     @Override
-    public void openCashDrawer() {
+    public void openCashDrawer(int drawer) {
         drawPrevious();
-        super.openCashDrawer();
+        super.openCashDrawer(drawer);
     }
 
     @Override

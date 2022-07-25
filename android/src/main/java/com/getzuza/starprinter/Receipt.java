@@ -1,4 +1,4 @@
-package com.getzuza.starprinter.starprinter;
+package com.getzuza.starprinter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -141,10 +141,13 @@ public class Receipt {
         }
     }
 
-    public void openCashDrawer() {
+    public void openCashDrawer(int drawer) {
         _builder.endDocument();
-        _builder.appendPeripheral(ICommandBuilder.PeripheralChannel.No1);
-        _builder.appendPeripheral(ICommandBuilder.PeripheralChannel.No2);
+        if (drawer > 1) {
+            _builder.appendPeripheral(ICommandBuilder.PeripheralChannel.No2);
+        } else {
+            _builder.appendPeripheral(ICommandBuilder.PeripheralChannel.No1);
+        }
         _builder.beginDocument();
     }
 

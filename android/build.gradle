@@ -1,4 +1,4 @@
-group 'com.getzuza.starprinter.starprinter'
+group 'com.getzuza.starprinter'
 version '1.0'
 
 buildscript {

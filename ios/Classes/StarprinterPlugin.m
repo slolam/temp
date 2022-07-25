@@ -2,10 +2,21 @@
 #import "Printer.h"
 #import "Receipt.h"
 
+@implementation PrinterReceipt
+@synthesize printer;
+@synthesize receipt;
+-(id) initWithPrinter: (Printer*) printer {
+    self = [super alloc];
+
+    self.printer = printer;
+    return self;
+}
+@end
+
 @implementation StarprinterPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"starprinter"
+      methodChannelWithName:@"getzuza.starprinter"
             binaryMessenger:[registrar messenger]];
   StarprinterPlugin* instance = [[StarprinterPlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
@@ -14,124 +25,112 @@
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     
-    NSDictionary* printerDictionary = [[NSMutableDictionary<NSString*,Printer*> alloc]init];
-    NSDictionary* receiptDictionary = [[NSMutableDictionary<NSString*,Receipt*> alloc]init];
+    NSDictionary* printerReceipts = [[NSMutableDictionary<NSString*,PrinterReceipt*> alloc]init];
+    NSDictionary* printerReceipts = [[NSMutableDictionary<NSString*,Receipt*> alloc]init];
     
-    if ([call.method  isEqual: @"searchPrinter"]) {
+    if ([call.method  isEqual: @"searchPrinters"]) {
         [Printer searchPrinters:^(NSArray<PrinterInfo *> *searchData) {
             NSData *data = [NSJSONSerialization dataWithJSONObject:searchData options:0 error:nil];
 
             NSString *searchPrinters = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             result(searchPrinters);
         }];
-    }else if([call.method  isEqual: @"getPrinter"]){
+    } else if ([call.method  isEqual: @"getPrinter"]){
         NSString *portName = call.arguments[@"portName"];
         int timeOut = call.arguments[@"timeOut"];
 
         Printer *printer = [Printer getPrinter:portName timeout:timeOut];
+        PrinterReceipt *printerReceipt = [PrinterReceipt initWithPrinter: printer];
 
-        [printerDictionary setValue:printer forKey:portName];
+        [printerReceipts setValue:printerReceipt forKey:portName];
         result(portName);
 
-    }else if([call.method  isEqual: @"createReceipt"]){
+    } else if ([call.method  isEqual: @"createReceipt"]){
         NSString *portName = call.arguments[@"portName"];
         bool textValue = call.arguments[@"text"];
         int paperSize = call.arguments[@"paperSize"];
 
-        Printer *printer = [printerDictionary objectForKey:portName];
-        [printer createReceiptText:textValue PaperSize:paperSize Handler:^(Receipt *receipt) {
-            [receiptDictionary setValue:receipt forKey:portName];
+        PrinterReceipt *printerReceipt = [printerReceipts objectForKey:portName];
+        [printerReceipt.printer createReceiptText:textValue PaperSize:paperSize Handler:^(Receipt *receipt) {
+            printerReceipt.receipt = receipt;
             result(portName);
         }];
 
-    }else if([call.method  isEqual: @"addAlignLeft"]){
+    } else if ([call.method  isEqual: @"addAlignLeft"]){
         NSString *portName = call.arguments[@"portName"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt addAlignLeft];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addAlignLeft];
 
-    }else if([call.method  isEqual: @"addAlignRight"]){
+    } else if([call.method  isEqual: @"addAlignRight"]){
         NSString *portName = call.arguments[@"portName"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt addAlignRight];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addAlignRight];
 
-    }else if([call.method  isEqual: @"addAlignCenter"]){
+    } else if ([call.method  isEqual: @"addAlignCenter"]){
         NSString *portName = call.arguments[@"portName"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt addAlignCenter];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addAlignCenter];
 
-    }else if([call.method  isEqual: @"setBlackColor"]){
+    } else if ([call.method  isEqual: @"setBlackColor"]){
         NSString *portName = call.arguments[@"portName"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt setBlackColor];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt setBlackColor];
 
-    }else if([call.method  isEqual: @"setRedColor"]){
+    } else if ([call.method  isEqual: @"setRedColor"]){
         NSString *portName = call.arguments[@"portName"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt setRedColor];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt setRedColor];
 
-    }else if([call.method  isEqual: @"addText"]){
+    } else if ([call.method  isEqual: @"addText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt addText:value];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addText:value];
 
-    }else if([call.method  isEqual: @"addDoubleText"]){
+    } else if ([call.method  isEqual: @"addDoubleText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt addDoubleText:value];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addDoubleText:value];
 
-    }else if([call.method  isEqual: @"addBoldText"]){
+    } else if ([call.method  isEqual: @"addBoldText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt addBoldText:value];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addBoldText:value];
 
-    }else if([call.method  isEqual: @"addUnderlinedText"]){
+    } else if ([call.method  isEqual: @"addUnderlinedText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt addUnderlinedText:value];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addUnderlinedText:value];
 
-    }else if([call.method  isEqual: @"addLine"]){
+    } else if ([call.method  isEqual: @"addLine"]){
         NSString *portName = call.arguments[@"portName"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [receipt addLine];
-        [receiptDictionary setValue:receipt forKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addLine];
 
-    }else if([call.method  isEqual: @"addImage"]){
+    } else if ([call.method  isEqual: @"addImage"]){
         NSString *portName = call.arguments[@"portName"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
         FlutterStandardTypedData *imgBytes = call.arguments[@"bytes"];
         int width = call.arguments[@"width"];
         UIImage *imageData = [UIImage imageWithData:imgBytes.data];
-        [receipt addImage:imageData width:width];
-        [receiptDictionary setValue:receipt forKey:portName];
+        [receipt.receipt addImage:imageData width:width];
 
-    }else if([call.method  isEqual: @"addBarcode"]){
+    } else if ([call.method  isEqual: @"addBarcode"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
+        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
         int height = call.arguments[@"height"];
-        [receipt addBarcode:value height:height];
-        [receiptDictionary setValue:receipt forKey:portName];
+        [receipt.receipt addBarcode:value height:height];
 
-    }else if([call.method  isEqual: @"printReceipt"]){
+    } else if ([call.method  isEqual: @"printReceipt"]){
         NSString *portName = call.arguments[@"portName"];
         int delay = call.arguments[@"delay"];
         int retry = call.arguments[@"retry"];
-        Printer *printer = [printerDictionary objectForKey:portName];
-        Receipt *receipt = [receiptDictionary objectForKey:portName];
-        [printer printReceipt:receipt withDelay:delay andRetry:retry onSuccess:^(PrinterStatus *printerStatus) {
+        ReceiptReceipt *printer = [printerReceipts objectForKey:portName];
+        [printer.printer printReceipt:printer.receipt withDelay:delay andRetry:retry onSuccess:^(PrinterStatus *printerStatus) {
             NSData *data = [NSJSONSerialization dataWithJSONObject:printerStatus options:0 error:nil];
             NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             result(printeResult);
@@ -140,9 +139,7 @@
             NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             result(printeResult);
         }];
-
     }
-
 }
 
 @end

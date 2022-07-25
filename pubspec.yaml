@@ -1,7 +1,7 @@
 name: starprinter
 description: A new Flutter plugin project.
 version: 0.0.1
-homepage:
+homepage: www.getzuza.com
 
 environment:
   sdk: ">=2.17.1 <3.0.0"
@@ -35,7 +35,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.getzuza.starprinter.starprinter
+        package: com.getzuza.starprinter
         pluginClass: StarprinterPlugin
       ios:
         pluginClass: StarprinterPlugin

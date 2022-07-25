@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, PaperSizes) {
 -(void) addQrCode: (NSString *) data;
 -(void) addLine;
 -(void) cutPaper;
--(void) openCashDrawer;
+-(void) openCashDrawer: (int) drawer;
 -(void) setFontName: (NSString *) name;
 -(void) setFontSize: (CGFloat) size;
 -(void) setFont: (UIFont *) font;

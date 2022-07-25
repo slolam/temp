@@ -1,4 +1,4 @@
-package com.getzuza.starprinter.starprinter;
+package com.getzuza.starprinter;
 
 public class PrinterStatus {
     public boolean offline;

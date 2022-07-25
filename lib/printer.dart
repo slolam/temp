@@ -3,18 +3,17 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:starprinter/starprinter.dart';
+
+const MethodChannel starPrinter = MethodChannel("getzuza.starprinter");
 
 class Printer {
-   static MethodChannel starPrinter =  const MethodChannel("starprinter");
-  List<dynamic> searchPrinterData = [];
-  String? portName;
+  String portName;
 
-  Printer({this.portName});
+  Printer({required this.portName});
 
-  searchPrinter() async {
-    searchPrinterData =
-        json.decode(await (starPrinter.invokeMethod("searchPrinter")));
+  static Future<List<dynamic>> searchPrinters() async {
+    List<dynamic> searchPrinterData =
+        json.decode(await (starPrinter.invokeMethod("searchPrinters")));
     if (kDebugMode) {
       print("searchPrinter---> $searchPrinterData");
     }
@@ -24,28 +23,40 @@ class Printer {
   static Future<Printer?> getPrinter(
       {required String portName, required int timeOut}) async {
     try {
-      String _portName = await (starPrinter.invokeMethod(
+      portName = await (starPrinter.invokeMethod(
           "getPrinter", {"portName": portName, "timeOut": timeOut}));
       if (kDebugMode) {
-        print("getPrinter--->$_portName");
+        print("getPrinter--->$portName");
       }
-      Printer printer = Printer(portName: _portName);
-      return printer;
+      return Printer(portName: portName);
     } catch (e) {
       return null;
     }
   }
 
-  createReceipt({
+  Future<Receipt?> createReceipt({
     required bool text,
     required int paperSize,
   }) async {
-    String createReceiptID = await (starPrinter.invokeMethod("createReceipt",
-        {"text": text, "paperSize": paperSize, "portName": portName}));
-    return createReceiptID;
+    await starPrinter.invokeMethod("createReceipt",
+        {"text": text, "paperSize": paperSize, "portName": portName});
+    return Receipt(portName: portName);
   }
 
-  addAlignLeft() async {
+  printReceipt({required int delay, required int retry}) async {
+    Map<String, dynamic> printStatus = json.decode(await starPrinter
+        .invokeMethod("printReceipt",
+            {"portName": portName, "delay": delay, "retry": retry}));
+    return printStatus;
+  }
+}
+
+class Receipt {
+  String portName;
+
+  Receipt({required this.portName});
+
+  void addAlignLeft() async {
     await starPrinter.invokeMethod("addAlignLeft", {
       "portName": portName,
     });
@@ -71,16 +82,16 @@ class Printer {
     });
   }
 
-  addText({
+  addText(
     String? value,
-  }) async {
+  ) async {
     await starPrinter
         .invokeMethod("addText", {"portName": portName, "value": value});
   }
 
-  addDoubleText({
+  addDoubleText(
     String? value,
-  }) async {
+  ) async {
     await starPrinter
         .invokeMethod("addDoubleText", {"portName": portName, "value": value});
   }
@@ -92,16 +103,16 @@ class Printer {
         .invokeMethod("addBoldText", {"portName": portName, "value": value});
   }
 
-  addUnderlinedText({
+  addUnderlinedText(
     String? value,
-  }) async {
+  ) async {
     await starPrinter.invokeMethod(
         "addUnderlinedText", {"portName": portName, "value": value});
   }
 
-  addInverseText({
+  addInverseText(
     String? value,
-  }) async {
+  ) async {
     await starPrinter
         .invokeMethod("addInverseText", {"portName": portName, "value": value});
   }
@@ -112,29 +123,15 @@ class Printer {
     });
   }
 
-  addImage({required Uint8List? bytes, int width = 0}) async {
+  addImage(Uint8List? bytes, {int width = 0}) async {
     await starPrinter.invokeMethod(
         "addImage", {"portName": portName, "bytes": bytes, "width": width});
   }
 
-  addBarcode({required String? value, required int height}) async {
+  addBarcode(String? value, {required int height}) async {
     await starPrinter.invokeMethod("addBarcode", {
       "value": value,
       "height": height,
     });
-  }
-
-  printReceipt({required int delay, required int retry}) async {
-    Map<String, dynamic> printStatus = json.decode(await starPrinter
-        .invokeMethod("printReceipt",
-            {"portName": portName, "delay": delay, "retry": retry}));
-    return printStatus;
-  }
-
-  void getPlatform() async {
-    String? data = await Starprinter().getPlatformVersion();
-    if (kDebugMode) {
-      print(data);
-    }
   }
 }

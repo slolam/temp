@@ -79,9 +79,9 @@ static void constructor_paragraph() {
     [super addBarcode:string height:height];
 }
 
--(void) openCashDrawer{
+-(void) openCashDrawer: (int) drawer{
     [self drawPrevious];
-    [super openCashDrawer];
+    [super openCashDrawer: drawer];
 }
 
 -(void) cutPaper{

@@ -1,4 +1,4 @@
-package com.getzuza.starprinter.starprinter;
+package com.getzuza.starprinter;
 
 import android.content.Context;
 

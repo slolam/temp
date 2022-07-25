@@ -17,19 +17,21 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String? portName;
-  Printer? _printer = Printer();
+  Printer? _printer;
+  Receipt? _receipt;
   @override
   void initState() {
     super.initState();
-   // _printer?.getPlatform();
+    // _printer?.getPlatform();
 
-  //  _printer?.searchPrinter();
+    //  _printer?.searchPrinter();
     setPrinter();
   }
 
   setPrinter() async {
-    _printer = await Printer.getPrinter(portName: '123.0.0', timeOut: 2000);
-    print("_printer =>>>>${_printer?.portName}");
+    _printer =
+        await Printer.getPrinter(portName: 'BT:TSP100-174736', timeOut: 2000);
+    debugPrint("_printer =>>>>${_printer?.portName}");
   }
 
   @override
@@ -41,6 +43,19 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () async {
+                  var list = await Printer.searchPrinters();
+                  debugPrint(' list of printers $list');
+                },
+                child: const Center(
+                  child: Text('Search Printers'),
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(50.0),
               child: GestureDetector(
@@ -61,7 +76,8 @@ class _MyAppState extends State<MyApp> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  _printer?.addAlignLeft();
+                  _receipt?.addAlignLeft();
+                  _receipt?.addText('Shailesh');
                 },
                 child: const Center(
                   child: Text('addAlignLeft'),
@@ -73,7 +89,7 @@ class _MyAppState extends State<MyApp> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  _printer?.printReceipt(delay: 0,retry: 1);
+                  _printer?.printReceipt(delay: 0, retry: 1);
                 },
                 child: const Center(
                   child: Text('printReceipt'),
@@ -92,7 +108,7 @@ class _MyAppState extends State<MyApp> {
                               .load(testImage))
                           .buffer
                           .asUint8List();
-                  _printer?.addImage(bytes: bytes);
+                  _receipt?.addImage(bytes);
                 },
                 child: const Center(
                   child: Text('addImage'),

@@ -1,4 +1,4 @@
-package com.getzuza.starprinter.starprinter;
+package com.getzuza.starprinter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -7,6 +7,7 @@ import android.util.Log;
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,6 +55,7 @@ public class Printer {
                 list.addAll(StarIOPort.searchPrinter(type, context));
             } catch (Exception e) {
                 // DO NOTHING
+                Log.e(Class, "Error occured " + e.getMessage());
             }
         }
 

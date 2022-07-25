@@ -136,34 +136,22 @@ bool isClosed = false;
 }
 
 -(void) addQrCode: (NSString *) data{
-    //[self drawPrevious];
     if(data){
-//        int w = [self paperWidth];
-//        if(width <= 0 || width > w) {
-//            width = w;
-//        }
-        NSData* raw = [data dataUsingEncoding:1];
 
-//        CIFilter* filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
-//
-//        CGAffineTransform transform = CGAffineTransformMakeScale(20, 20);
-//        [filter setValue:raw forKey:@"inputMessage"];
-//
-//        CIImage* src = [[filter outputImage] imageByApplyingTransform:transform];
-//
-//        UIImage* image = [UIImage imageWithCIImage:src];
+        NSData* raw = [data dataUsingEncoding:1];
         
         [self.builder appendQrCodeDataWithAlignment:raw model:SCBQrCodeModelNo2 level:SCBQrCodeLevelM cell:8 position:SCBAlignmentPositionCenter];
-
-//        [self.builder appendBitmapWithAlignment:image diffusion:NO width:width bothScale:YES position:SCBAlignmentPositionCenter];
     }
 }
 
 
--(void) openCashDrawer{
+-(void) openCashDrawer: (int) drawer{
     [self.builder endDocument];
-    [self.builder appendPeripheral:SCBPeripheralChannelNo1];
-    [self.builder appendPeripheral:SCBPeripheralChannelNo2];
+    if (drawer > 1) {
+        [self.builder appendPeripheral:SCBPeripheralChannelNo2];
+    } else {
+        [self.builder appendPeripheral:SCBPeripheralChannelNo1];
+    }
     [self.builder beginDocument];
 }
 
