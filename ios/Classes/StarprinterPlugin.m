@@ -6,15 +6,18 @@
 @synthesize printer;
 @synthesize receipt;
 -(id) initWithPrinter: (Printer*) printer {
-    self = [super alloc];
+    self = [super init];
 
     self.printer = printer;
     return self;
 }
 @end
 
+
 @implementation StarprinterPlugin
+NSDictionary*printerReceipts;
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+    printerReceipts = [[NSMutableDictionary<NSString*,PrinterReceipt*> alloc]init];
   FlutterMethodChannel* channel = [FlutterMethodChannel
       methodChannelWithName:@"getzuza.starprinter"
             binaryMessenger:[registrar messenger]];
@@ -24,9 +27,6 @@
 
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    
-    NSDictionary* printerReceipts = [[NSMutableDictionary<NSString*,PrinterReceipt*> alloc]init];
-    NSDictionary* printerReceipts = [[NSMutableDictionary<NSString*,Receipt*> alloc]init];
     
     if ([call.method  isEqual: @"searchPrinters"]) {
         [Printer searchPrinters:^(NSArray<PrinterInfo *> *searchData) {
@@ -40,8 +40,8 @@
         int timeOut = call.arguments[@"timeOut"];
 
         Printer *printer = [Printer getPrinter:portName timeout:timeOut];
-        PrinterReceipt *printerReceipt = [PrinterReceipt initWithPrinter: printer];
-
+        PrinterReceipt *printerReceipt;
+        printerReceipt = [printerReceipt initWithPrinter:printer];
         [printerReceipts setValue:printerReceipt forKey:portName];
         result(portName);
 
@@ -58,61 +58,61 @@
 
     } else if ([call.method  isEqual: @"addAlignLeft"]){
         NSString *portName = call.arguments[@"portName"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addAlignLeft];
 
     } else if([call.method  isEqual: @"addAlignRight"]){
         NSString *portName = call.arguments[@"portName"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addAlignRight];
 
     } else if ([call.method  isEqual: @"addAlignCenter"]){
         NSString *portName = call.arguments[@"portName"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addAlignCenter];
 
     } else if ([call.method  isEqual: @"setBlackColor"]){
         NSString *portName = call.arguments[@"portName"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt setBlackColor];
 
     } else if ([call.method  isEqual: @"setRedColor"]){
         NSString *portName = call.arguments[@"portName"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt setRedColor];
 
     } else if ([call.method  isEqual: @"addText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addText:value];
 
     } else if ([call.method  isEqual: @"addDoubleText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addDoubleText:value];
 
     } else if ([call.method  isEqual: @"addBoldText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addBoldText:value];
 
     } else if ([call.method  isEqual: @"addUnderlinedText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addUnderlinedText:value];
 
     } else if ([call.method  isEqual: @"addLine"]){
         NSString *portName = call.arguments[@"portName"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addLine];
 
     } else if ([call.method  isEqual: @"addImage"]){
         NSString *portName = call.arguments[@"portName"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         FlutterStandardTypedData *imgBytes = call.arguments[@"bytes"];
         int width = call.arguments[@"width"];
         UIImage *imageData = [UIImage imageWithData:imgBytes.data];
@@ -121,7 +121,7 @@
     } else if ([call.method  isEqual: @"addBarcode"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
-        ReceiptReceipt *receipt = [printerReceipts objectForKey:portName];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         int height = call.arguments[@"height"];
         [receipt.receipt addBarcode:value height:height];
 
@@ -129,7 +129,7 @@
         NSString *portName = call.arguments[@"portName"];
         int delay = call.arguments[@"delay"];
         int retry = call.arguments[@"retry"];
-        ReceiptReceipt *printer = [printerReceipts objectForKey:portName];
+        PrinterReceipt *printer = [printerReceipts objectForKey:portName];
         [printer.printer printReceipt:printer.receipt withDelay:delay andRetry:retry onSuccess:^(PrinterStatus *printerStatus) {
             NSData *data = [NSJSONSerialization dataWithJSONObject:printerStatus options:0 error:nil];
             NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
