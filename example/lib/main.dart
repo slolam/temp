@@ -41,83 +41,101 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () async {
-                  var list = await Printer.searchPrinters();
-                  debugPrint(' list of printers $list');
-                },
-                child: const Center(
-                  child: Text('Search Printers'),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async {
+                    var list = await Printer.searchPrinters();
+                    debugPrint(' list of printers $list');
+                  },
+                  child: const Center(
+                    child: Text('Search Printers'),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () async{
-                  _receipt = await _printer?.createReceipt(
-                    text: true,
-                    paperSize: 20,
-                  );
-                },
-                child: const Center(
-                  child: Text('createReceipt'),
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async{
+                    _receipt = await _printer?.createReceipt(
+                      text: true,
+                      paperSize: 20,
+                    );
+                  },
+                  child: const Center(
+                    child: Text('createReceipt'),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  _receipt?.addAlignLeft();
-                  _receipt?.addAlignCenter();
-                  _receipt?.setBlackColor();
-                  _receipt?.addText('Shailesh');
-                },
-                child: const Center(
-                  child: Text('addAlignLeft'),
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    _receipt?.addAlignLeft();
+                    _receipt?.addAlignCenter();
+                    _receipt?.setBlackColor();
+                    _receipt?.addText('Shailesh');
+                  },
+                  child: const Center(
+                    child: Text('addAlignLeft'),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  _printer?.printReceipt(delay: 0, retry: 1);
-                },
-                child: const Center(
-                  child: Text('printReceipt'),
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    _printer?.printReceipt(delay: 0, retry: 1);
+                  },
+                  child: const Center(
+                    child: Text('printReceipt'),
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(50.0),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () async {
-                  String testImage =
-                      "https://images.pexels.com/photos/3521937/pexels-photo-3521937.jpeg?auto=compress&cs=tinysrgb&h=566.525&fit=crop&w=633.175&dpr=1";
-                  Uint8List bytes =
-                      (await NetworkAssetBundle(Uri.parse(testImage))
-                              .load(testImage))
-                          .buffer
-                          .asUint8List();
-                  _receipt?.addImage(bytes);
-                },
-                child: const Center(
-                  child: Text('addImage'),
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async {
+                    String testImage =
+                        "https://images.pexels.com/photos/3521937/pexels-photo-3521937.jpeg?auto=compress&cs=tinysrgb&h=566.525&fit=crop&w=633.175&dpr=1";
+                    Uint8List bytes =
+                        (await NetworkAssetBundle(Uri.parse(testImage))
+                                .load(testImage))
+                            .buffer
+                            .asUint8List();
+                    _receipt?.addImage(bytes);
+                  },
+                  child: const Center(
+                    child: Text('addImage'),
+                  ),
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async {
+                   BarcodeReader barcodeReader = _printer?.getBarcodeReader();
+                   barcodeReader.barcodeConnect();
+                   barcodeReader.onBarcodeRead.listen((event) {
+                     debugPrint("onBarcodeRead $event");
+                   });
+                  },
+                  child: const Center(
+                    child: Text('barcode connect'),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

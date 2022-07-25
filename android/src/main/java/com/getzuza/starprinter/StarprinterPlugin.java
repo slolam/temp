@@ -41,7 +41,7 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
   private static final String STAR_PRINTER = "getzuza.starprinter";
   private HashMap<String, PrinterReceipt> printerReceipts = new HashMap<>();
   private Activity activity;
-
+  BarcodeReader barcodeReader;
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(),STAR_PRINTER);
@@ -160,6 +160,40 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             int width = call.argument("width");
             printer.receipt.addImage(bitmap,width);
             break;
+          case "addBarcode":
+            portName = call.argument("portName");
+            value = call.argument("value");
+            int height = call.argument("height");
+            printer = printerReceipts.get(portName);
+            printer.receipt.addBarcode(value,height);
+          case "addQrCode":
+            portName = call.argument("portName");
+            value = call.argument("value");
+            printer = printerReceipts.get(portName);
+            printer.receipt.addQrCode(value);
+            break;
+          case "openCashDrawer":
+            portName = call.argument("portName");
+            int drawer = call.argument("drawer");
+            printer = printerReceipts.get(portName);
+            printer.receipt.openCashDrawer(drawer);
+            break;
+          case "cutPaper":
+            portName = call.argument("portName");
+            printer = printerReceipts.get(portName);
+            printer.receipt.cutPaper();
+            break;
+          case "setCommand":
+            portName = call.argument("portName");
+            String command = call.argument("command");
+            printer = printerReceipts.get(portName);
+            printer.receipt.setCommand(command);
+            break;
+          case "closeReceipt":
+            portName = call.argument("portName");
+            printer = printerReceipts.get(portName);
+            printer.receipt.closeReceipt();
+            break;
           case "printReceipt":
             portName = call.argument("portName");
             int delay = call.argument("delay");
@@ -170,6 +204,19 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
                 result.success(new Gson().toJson(status));
               });
             }
+            break;
+          case "connect":
+            portName = call.argument("portName");
+            barcodeReader = new BarcodeReader(portName,activity);
+
+            barcodeReader.setBarcodeScanner(new BarcodeReader.BarcodeCallback() {
+              @Override
+              public void onBarcodeRead(String code) {
+                 HashMap<String, String> barcode = new HashMap<>();
+                barcode.put("code",code);
+                channel.invokeMethod("onBarcodeRead",barcode);
+              }
+            });
             break;
           default:
             result.notImplemented();

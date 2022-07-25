@@ -1,6 +1,7 @@
 #import "StarprinterPlugin.h"
 #import "Printer.h"
 #import "Receipt.h"
+#import "BarcodeReader.h"
 
 @implementation PrinterReceipt
 @synthesize printer;
@@ -16,9 +17,10 @@
 
 @implementation StarprinterPlugin
 NSDictionary *printerReceipts;
+FlutterMethodChannel* channel;
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     printerReceipts = [[NSMutableDictionary<NSString*,PrinterReceipt*> alloc]init];
-  FlutterMethodChannel* channel = [FlutterMethodChannel
+  channel = [FlutterMethodChannel
       methodChannelWithName:@"getzuza.starprinter"
             binaryMessenger:[registrar messenger]];
   StarprinterPlugin* instance = [[StarprinterPlugin alloc] init];
@@ -105,6 +107,12 @@ NSDictionary *printerReceipts;
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addUnderlinedText:value];
 
+    }else if ([call.method  isEqual: @"addInverseText"]){
+        NSString *portName = call.arguments[@"portName"];
+        NSString *value = call.arguments[@"value"];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addInverseText:value];
+
     } else if ([call.method  isEqual: @"addLine"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
@@ -125,6 +133,34 @@ NSDictionary *printerReceipts;
         int height = call.arguments[@"height"];
         [receipt.receipt addBarcode:value height:height];
 
+    } else if ([call.method  isEqual: @"addQrCode"]){
+        NSString *portName = call.arguments[@"portName"];
+        NSString *value = call.arguments[@"value"];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt addQrCode:value];
+        
+    } else if ([call.method  isEqual: @"openCashDrawer"]){
+        NSString *portName = call.arguments[@"portName"];
+        int drawer = call.arguments[@"drawer"];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt openCashDrawer:drawer];
+        
+    } else if ([call.method  isEqual: @"cutPaper"]){
+        NSString *portName = call.arguments[@"portName"];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt cutPaper];
+        
+    } else if ([call.method  isEqual: @"closeReceipt"]){
+        NSString *portName = call.arguments[@"portName"];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt closeReceipt];
+        
+    } else if ([call.method  isEqual: @"setCommand"]){
+        NSString *portName = call.arguments[@"portName"];
+        NSString *command = call.arguments[@"command"];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt setCommand:command];
+        
     } else if ([call.method  isEqual: @"printReceipt"]){
         NSString *portName = call.arguments[@"portName"];
         int delay = call.arguments[@"delay"];
@@ -138,6 +174,15 @@ NSDictionary *printerReceipts;
             NSData *data = [NSJSONSerialization dataWithJSONObject:printerStatus options:0 error:nil];
             NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             result(printeResult);
+        }];
+    } else if ([call.method  isEqual: @"connect"]){
+        NSString *portName = call.arguments[@"portName"];
+        BarcodeScanner *barcodeReader = [[BarcodeScanner alloc] init];
+        [barcodeReader initWithPortName:portName];
+        [barcodeReader setBarcodeScanner:^(NSString *code) {
+            NSMutableDictionary<NSString*,NSString*> *data =  [[NSMutableDictionary<NSString*,NSString*> alloc]init];
+            [data setValue:code forKey:@"code"];
+            [channel invokeMethod:@"onBarcodeRead" arguments:data];
         }];
     }
 }

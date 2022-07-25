@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -49,6 +50,41 @@ class Printer {
             {"portName": portName, "delay": delay, "retry": retry}));
     return printStatus;
   }
+
+  getBarcodeReader(){
+    return BarcodeReader(portName: portName);
+  }
+}
+
+class BarcodeReader{
+  String portName;
+  StreamController onBarcodeReadController = StreamController.broadcast();
+
+  BarcodeReader({required this.portName}){
+    starPrinter.setMethodCallHandler(_didReceiveTranscript);
+  }
+
+  Stream get onBarcodeRead => onBarcodeReadController.stream;
+
+  Future<void> _didReceiveTranscript(MethodCall call) async{
+    switch(call.method){
+      case "onBarcodeRead":
+        final Map<String, dynamic> args = call.arguments.cast<String, dynamic>();
+        onBarcodeReadController.add(args['code']);
+        break;
+    }
+  }
+
+  barcodeConnect() async {
+    await starPrinter.invokeMethod("connect",
+        {"portName": portName});
+  }
+
+  disconnect() async {
+    await starPrinter.invokeMethod("disconnect",
+        {"portName": portName});
+  }
+
 }
 
 class Receipt {
@@ -130,8 +166,43 @@ class Receipt {
 
   addBarcode(String? value, {required int height}) async {
     await starPrinter.invokeMethod("addBarcode", {
+      "portName": portName,
       "value": value,
       "height": height,
     });
   }
+
+  addQrCode({required String? value}) async {
+    await starPrinter.invokeMethod("addQrCode", {
+      "portName": portName,
+      "value": value,
+    });
+  }
+
+  openCashDrawer({required int drawer}) async {
+    await starPrinter.invokeMethod("openCashDrawer", {
+      "portName": portName,
+      "drawer": drawer,
+    });
+  }
+
+  cutPaper() async {
+    await starPrinter.invokeMethod("addQrCode", {
+      "portName": portName,
+    });
+  }
+
+  setCommand({required String command}) async {
+    await starPrinter.invokeMethod("setCommand", {
+      "portName": portName,
+      "command": command,
+    });
+  }
+
+  closeReceipt() async {
+    await starPrinter.invokeMethod("closeReceipt", {
+      "portName": portName,
+    });
+  }
+
 }
