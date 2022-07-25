@@ -14,9 +14,9 @@ class Printer {
   static Future<List<dynamic>> searchPrinters() async {
     List<dynamic> searchPrinterData =
         json.decode(await (starPrinter.invokeMethod("searchPrinters")));
-    if (kDebugMode) {
-      print("searchPrinter---> $searchPrinterData");
-    }
+
+    debugPrint("searchPrinter---> $searchPrinterData");
+
     return searchPrinterData;
   }
 
@@ -25,9 +25,9 @@ class Printer {
     try {
       portName = await (starPrinter.invokeMethod(
           "getPrinter", {"portName": portName, "timeOut": timeOut}));
-      if (kDebugMode) {
-        print("getPrinter--->$portName");
-      }
+
+      debugPrint("getPrinter--->$portName");
+
       return Printer(portName: portName);
     } catch (e) {
       return null;

@@ -15,7 +15,7 @@
 
 
 @implementation StarprinterPlugin
-NSDictionary*printerReceipts;
+NSDictionary *printerReceipts;
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     printerReceipts = [[NSMutableDictionary<NSString*,PrinterReceipt*> alloc]init];
   FlutterMethodChannel* channel = [FlutterMethodChannel
@@ -40,8 +40,8 @@ NSDictionary*printerReceipts;
         int timeOut = call.arguments[@"timeOut"];
 
         Printer *printer = [Printer getPrinter:portName timeout:timeOut];
-        PrinterReceipt *printerReceipt;
-        printerReceipt = [printerReceipt initWithPrinter:printer];
+        PrinterReceipt *printerReceipt = [[PrinterReceipt alloc] init];
+        [printerReceipt initWithPrinter:printer];
         [printerReceipts setValue:printerReceipt forKey:portName];
         result(portName);
 

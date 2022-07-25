@@ -60,8 +60,8 @@ class _MyAppState extends State<MyApp> {
               padding: const EdgeInsets.all(50.0),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  _printer?.createReceipt(
+                onTap: () async{
+                  _receipt = await _printer?.createReceipt(
                     text: true,
                     paperSize: 20,
                   );
@@ -77,6 +77,8 @@ class _MyAppState extends State<MyApp> {
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   _receipt?.addAlignLeft();
+                  _receipt?.addAlignCenter();
+                  _receipt?.setBlackColor();
                   _receipt?.addText('Shailesh');
                 },
                 child: const Center(
