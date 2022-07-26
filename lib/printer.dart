@@ -81,6 +81,7 @@ class BarcodeReader{
   }
 
   disconnect() async {
+    onBarcodeReadController.close();
     await starPrinter.invokeMethod("disconnect",
         {"portName": portName});
   }
@@ -187,7 +188,7 @@ class Receipt {
   }
 
   cutPaper() async {
-    await starPrinter.invokeMethod("addQrCode", {
+    await starPrinter.invokeMethod("cutPaper", {
       "portName": portName,
     });
   }

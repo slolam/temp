@@ -17,6 +17,7 @@
 
 @implementation StarprinterPlugin
 NSDictionary *printerReceipts;
+BarcodeScanner *barcodeReader;
 FlutterMethodChannel* channel;
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     printerReceipts = [[NSMutableDictionary<NSString*,PrinterReceipt*> alloc]init];
@@ -42,8 +43,7 @@ FlutterMethodChannel* channel;
         int timeOut = call.arguments[@"timeOut"];
 
         Printer *printer = [Printer getPrinter:portName timeout:timeOut];
-        PrinterReceipt *printerReceipt = [[PrinterReceipt alloc] init];
-        [printerReceipt initWithPrinter:printer];
+        PrinterReceipt *printerReceipt = [[PrinterReceipt alloc] initWithPrinter:printer];
         [printerReceipts setValue:printerReceipt forKey:portName];
         result(portName);
 
@@ -177,8 +177,7 @@ FlutterMethodChannel* channel;
         }];
     } else if ([call.method  isEqual: @"connect"]){
         NSString *portName = call.arguments[@"portName"];
-        BarcodeScanner *barcodeReader = [[BarcodeScanner alloc] init];
-        [barcodeReader initWithPortName:portName];
+        barcodeReader = [[BarcodeScanner alloc] initWithPortName:portName];
         [barcodeReader setBarcodeScanner:^(NSString *code) {
             NSMutableDictionary<NSString*,NSString*> *data =  [[NSMutableDictionary<NSString*,NSString*> alloc]init];
             [data setValue:code forKey:@"code"];
