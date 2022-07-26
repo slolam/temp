@@ -183,6 +183,9 @@ FlutterMethodChannel* channel;
             [data setValue:code forKey:@"code"];
             [channel invokeMethod:@"onBarcodeRead" arguments:data];
         }];
+    } else if ([call.method  isEqual: @"disconnect"]){
+        NSString *portName = call.arguments[@"portName"];
+        [barcodeReader disconnect];
     }
 }
 

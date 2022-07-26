@@ -218,6 +218,9 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
               }
             });
             break;
+          case "disconnect":
+            portName = call.argument("portName");
+            barcodeReader.disconnect();
           default:
             result.notImplemented();
             break;
