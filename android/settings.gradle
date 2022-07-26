@@ -1,4 +1,1 @@
 rootProject.name = 'starprinter'
-
-include ':StarPrinterLib'
-include ':app'
