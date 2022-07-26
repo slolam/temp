@@ -1,5 +1,7 @@
 #import "AppDelegate.h"
 #import "GeneratedPluginRegistrant.h"
+//#import "Printer.h"
+//#import "Receipt.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions {
@@ -7,6 +9,8 @@
     
     FlutterMethodChannel* starPrinterChannel = [FlutterMethodChannel
                                                 methodChannelWithName:@"starPrinter"
+                                                binaryMessenger:controller.binaryMessenger];
+
 
     [starPrinterChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
     }];
