@@ -72,10 +72,6 @@ class _MyAppState extends State<MyApp> {
                       ElevatedButton(
                         onPressed: () async {
                           setPrinter();
-                          /*  _receipt = await _printer?.createReceipt(
-                            text: true,
-                            paperSize: 20,
-                          );*/
                         },
                         child: const Center(
                           child: Text('CLICK'),
@@ -83,7 +79,6 @@ class _MyAppState extends State<MyApp> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          setPrinter();
                           _receipt = await _printer?.createReceipt(
                             text: true,
                             paperSize: 20,
@@ -95,7 +90,6 @@ class _MyAppState extends State<MyApp> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          setPrinter();
                           _receipt = await _printer?.createReceipt(
                             text: false,
                             paperSize: 20,
