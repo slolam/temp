@@ -244,10 +244,10 @@ static NSMutableDictionary * printerQueues;
         } // END of FINALLY
         
         if(result.printed) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            // dispatch_async(dispatch_get_main_queue(), ^{
                 NSLog(@"Printed successfully delay = %f and retry = %d", delay, retry);
                 successBlock (result);
-            });
+            // });
             return;
         }
         if(retry > 0) {
@@ -257,10 +257,10 @@ static NSMutableDictionary * printerQueues;
         retry--;
     } while(retry > 0);//END of DO-WHILE
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    // dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"Failed to print delay = %f and pending retry = %d", delay, retry);
         failedBlock (result);
-    });
+    // });
 }
 
 + (void) searchPrinters: (void(^)(NSArray<PrinterInfo *> *)) completeBlock {

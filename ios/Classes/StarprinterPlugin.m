@@ -34,7 +34,7 @@ FlutterMethodChannel* channel;
     if ([call.method  isEqual: @"searchPrinters"]) {
         [Printer searchPrinters:^(NSArray<PrinterInfo *> *searchData) {
             
-            NSMutableArray *printers = [NSMutableArray init];
+            NSMutableArray *printers = [[NSMutableArray alloc] init];
             
             for (PrinterInfo *printer in searchData) {
                 [printers addObject:@{

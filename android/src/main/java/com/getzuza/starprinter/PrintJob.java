@@ -64,7 +64,7 @@ public class PrintJob implements Runnable {
                 }
 
                 if (port == null) {
-                    status.error = "Cannot connect to the printer";
+                    status.error = String.format("Could not connect to the printer %s", _portName);
                     _callback.onResponse(status);
                     return;
                 }
