@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -23,7 +24,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 
 /** StarprinterPlugin */
 public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
-
+  private static final String Class = "Plugin";
   class PrinterReceipt {
     public Printer printer;
     public Receipt receipt;
@@ -58,7 +59,16 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
         String value;
         switch (call.method) {
           case "searchPrinters":
-            result.success(new Gson().toJson(Printer.searchPrinters(activity)));
+            PrinterInfo[] printers = Printer.searchPrinters(activity);
+            ArrayList<HashMap<String, Object>> list = new ArrayList<>();
+            for (PrinterInfo p : printers) {
+              HashMap<String, Object> hash = new HashMap<>();
+              hash.put("portName", p.portName);
+              hash.put("modelName", p.modelName);
+              hash.put("macAddress", p.macAddress);
+              list.add(hash);
+            }
+            result.success(list);
             break;
           case "getPrinter":
             String portName = call.argument("portName");
@@ -79,36 +89,43 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             if (printer != null) {
               printer.receipt = printer.printer.createReceipt(text, paperSize);
               result.success(portName);
-            } 
+            } else {
+              result.success(null);
+            }
             break;
           case "addAlignLeft":
             portName = call.argument("portName");
             printer = printerReceipts.get(portName);
             printer.receipt.addAlignLeft();
+            result.success(null);;
             break;
 
           case "addAlignRight":
             portName = call.argument("portName");
             printer = printerReceipts.get(portName);
             printer.receipt.addAlignRight();
+            result.success(null);;
             break;
 
           case "addAlignCenter":
             portName = call.argument("portName");
             printer = printerReceipts.get(portName);
             printer.receipt.addAlignCenter();
+            result.success(null);;
             break;
 
           case "setBlackColor":
             portName = call.argument("portName");
             printer = printerReceipts.get(portName);
             printer.receipt.setBlackColor();
+            result.success(null);;
             break;
 
           case "setRedColor":
             portName = call.argument("portName");
             printer = printerReceipts.get(portName);
             printer.receipt.setRedColor();
+            result.success(null);;
             break;
 
           case "addText":
@@ -116,6 +133,7 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             value = call.argument("value");
             printer = printerReceipts.get(portName);
             printer.receipt.addText(value);
+            result.success(null);;
             break;
 
           case "addDoubleText":
@@ -123,6 +141,7 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             value = call.argument("value");
             printer = printerReceipts.get(portName);
             printer.receipt.addDoubleText(value);
+            result.success(null);;
             break;
 
           case "addBoldText":
@@ -130,6 +149,7 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             value = call.argument("value");
             printer = printerReceipts.get(portName);
             printer.receipt.addBoldText(value);
+            result.success(null);;
             break;
 
           case "addUnderlinedText":
@@ -137,6 +157,7 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             value = call.argument("value");
             printer = printerReceipts.get(portName);
             printer.receipt.addUnderlinedText(value);
+            result.success(null);;
             break;
 
           case "addInverseText":
@@ -144,12 +165,13 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             value = call.argument("value");
             printer = printerReceipts.get(portName);
             printer.receipt.addInverseText(value);
+            result.success(null);;
             break;
-
           case "addLine":
             portName = call.argument("portName");
             printer = printerReceipts.get(portName);
             printer.receipt.addLine();
+            result.success(null);;
             break;
           case "addImage":
             portName = call.argument("portName");
@@ -159,6 +181,7 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
                     bytes.length);
             int width = call.argument("width");
             printer.receipt.addImage(bitmap,width);
+            result.success(null);;
             break;
           case "addBarcode":
             portName = call.argument("portName");
@@ -166,42 +189,62 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             int height = call.argument("height");
             printer = printerReceipts.get(portName);
             printer.receipt.addBarcode(value,height);
+            result.success(null);
+            break;
           case "addQrCode":
             portName = call.argument("portName");
             value = call.argument("value");
             printer = printerReceipts.get(portName);
             printer.receipt.addQrCode(value);
+            result.success(null);
             break;
           case "openCashDrawer":
             portName = call.argument("portName");
             int drawer = call.argument("drawer");
             printer = printerReceipts.get(portName);
             printer.receipt.openCashDrawer(drawer);
+            result.success(null);;
             break;
           case "cutPaper":
             portName = call.argument("portName");
             printer = printerReceipts.get(portName);
             printer.receipt.cutPaper();
+            result.success(null);;
+            break;
+          case "setFontSize":
+            portName = call.argument("portName");
+            double size = call.argument("size");
+            printer = printerReceipts.get(portName);
+            printer.receipt.setFontSize((float)size);
+            result.success(null);;
             break;
           case "setCommand":
             portName = call.argument("portName");
             String command = call.argument("command");
             printer = printerReceipts.get(portName);
             printer.receipt.setCommand(command);
+            result.success(null);;
             break;
           case "closeReceipt":
             portName = call.argument("portName");
             printer = printerReceipts.get(portName);
             printer.receipt.closeReceipt();
+            result.success(null);;
             break;
           case "printReceipt":
             portName = call.argument("portName");
-            int delay = call.argument("delay");
+            double delay = call.argument("delay");
             int retry = call.argument("retry");
             printer = printerReceipts.get(portName);
             if (printer != null) {
-              printer.printer.printReceipt(printer.receipt,delay,retry,status -> {
-                result.success(new Gson().toJson(status));
+              printer.printer.printReceipt(printer.receipt, (float) delay, retry, status -> {
+                HashMap<String, Object> hash = new HashMap<>();
+                hash.put("offline", status.offline);
+                hash.put("error", status.error);
+                hash.put("outOfPaper", status.outOfPaper);
+                hash.put("paperJam", status.paperJam);
+                hash.put("printed", status.printed);
+                result.success(hash);
               });
             }
             break;
@@ -217,10 +260,13 @@ public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, Acti
                 channel.invokeMethod("onBarcodeRead",barcode);
               }
             });
+            result.success(null);;
             break;
           case "disconnect":
             portName = call.argument("portName");
             barcodeReader.disconnect();
+            barcodeReader = null;
+            result.success(null);;
           default:
             result.notImplemented();
             break;

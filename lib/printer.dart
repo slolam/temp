@@ -14,7 +14,7 @@ class Printer {
 
   static Future<List<dynamic>> searchPrinters() async {
     List<dynamic> searchPrinterData =
-        json.decode(await (starPrinter.invokeMethod("searchPrinters")));
+        await (starPrinter.invokeMethod("searchPrinters"));
 
     debugPrint("searchPrinter---> $searchPrinterData");
 
@@ -41,131 +41,131 @@ class Printer {
   }) async {
     await starPrinter.invokeMethod("createReceipt",
         {"text": text, "paperSize": paperSize, "portName": portName});
-    return Receipt(portName: portName);
+    return Receipt(portName: portName, text: text);
   }
 
-  printReceipt({required int delay, required int retry}) async {
+  Future<Map<String, dynamic>> printReceipt(
+      {required int delay, required int retry}) async {
     Map<String, dynamic> printStatus = json.decode(await starPrinter
         .invokeMethod("printReceipt",
             {"portName": portName, "delay": delay, "retry": retry}));
     return printStatus;
   }
 
-  getBarcodeReader(){
+  getBarcodeReader() {
     return BarcodeReader(portName: portName);
   }
 }
 
-class BarcodeReader{
+class BarcodeReader {
   String portName;
   StreamController onBarcodeReadController = StreamController.broadcast();
 
-  BarcodeReader({required this.portName}){
+  BarcodeReader({required this.portName}) {
     starPrinter.setMethodCallHandler(_didReceiveTranscript);
   }
 
   Stream get onBarcodeRead => onBarcodeReadController.stream;
 
-  Future<void> _didReceiveTranscript(MethodCall call) async{
-    switch(call.method){
+  Future<void> _didReceiveTranscript(MethodCall call) async {
+    switch (call.method) {
       case "onBarcodeRead":
-        final Map<String, dynamic> args = call.arguments.cast<String, dynamic>();
+        final Map<String, dynamic> args =
+            call.arguments.cast<String, dynamic>();
         onBarcodeReadController.add(args['code']);
         break;
     }
   }
 
   barcodeConnect() async {
-    await starPrinter.invokeMethod("connect",
-        {"portName": portName});
+    await starPrinter.invokeMethod("connect", {"portName": portName});
   }
 
   disconnect() async {
     onBarcodeReadController.close();
-    await starPrinter.invokeMethod("disconnect",
-        {"portName": portName});
+    await starPrinter.invokeMethod("disconnect", {"portName": portName});
   }
-
 }
 
 class Receipt {
   String portName;
+  bool text = false;
 
-  Receipt({required this.portName});
+  Receipt({required this.portName, required bool text});
 
-  void addAlignLeft() async {
+  Future<void> addAlignLeft() async {
     await starPrinter.invokeMethod("addAlignLeft", {
       "portName": portName,
     });
   }
 
-  addAlignRight() async {
+  Future<void> addAlignRight() async {
     await starPrinter.invokeMethod("addAlignRight", {"portName": portName});
   }
 
-  addAlignCenter() async {
+  Future<void> addAlignCenter() async {
     await starPrinter.invokeMethod("addAlignCenter", {"portName": portName});
   }
 
-  setBlackColor() async {
+  Future<void> setBlackColor() async {
     await starPrinter.invokeMethod("setBlackColor", {
       "portName": portName,
     });
   }
 
-  setRedColor() async {
+  Future<void> setRedColor() async {
     await starPrinter.invokeMethod("setRedColor", {
       "portName": portName,
     });
   }
 
-  addText(
-    String? value,
+  Future<void> addText(
+    String value,
   ) async {
     await starPrinter
         .invokeMethod("addText", {"portName": portName, "value": value});
   }
 
-  addDoubleText(
-    String? value,
+  Future<void> addDoubleText(
+    String value,
   ) async {
     await starPrinter
         .invokeMethod("addDoubleText", {"portName": portName, "value": value});
   }
 
-  addBoldText({
-    String? value,
-  }) async {
+  Future<void> addBoldText(
+    String value,
+  ) async {
     await starPrinter
         .invokeMethod("addBoldText", {"portName": portName, "value": value});
   }
 
-  addUnderlinedText(
-    String? value,
+  Future<void> addUnderlinedText(
+    String value,
   ) async {
     await starPrinter.invokeMethod(
         "addUnderlinedText", {"portName": portName, "value": value});
   }
 
-  addInverseText(
-    String? value,
+  Future<void> addInverseText(
+    String value,
   ) async {
     await starPrinter
         .invokeMethod("addInverseText", {"portName": portName, "value": value});
   }
 
-  addLine() async {
+  Future<void> addLine() async {
     await starPrinter.invokeMethod("addLine", {
       "portName": portName,
     });
   }
 
-  addImage(Uint8List? bytes, {int width = 0}) async {
+  Future<void> addImage(Uint8List bytes, {int width = 0}) async {
     await starPrinter.invokeMethod(
         "addImage", {"portName": portName, "bytes": bytes, "width": width});
   }
 
-  addBarcode(String? value, {required int height}) async {
+  Future<void> addBarcode(String value, int height) async {
     await starPrinter.invokeMethod("addBarcode", {
       "portName": portName,
       "value": value,
@@ -173,37 +173,70 @@ class Receipt {
     });
   }
 
-  addQrCode({required String? value}) async {
+  Future<void> addQrCode(String value) async {
     await starPrinter.invokeMethod("addQrCode", {
       "portName": portName,
       "value": value,
     });
   }
 
-  openCashDrawer({required int drawer}) async {
+  Future<void> openCashDrawer({required int drawer}) async {
     await starPrinter.invokeMethod("openCashDrawer", {
       "portName": portName,
       "drawer": drawer,
     });
   }
 
-  cutPaper() async {
+  Future<void> cutPaper() async {
     await starPrinter.invokeMethod("cutPaper", {
       "portName": portName,
     });
   }
 
-  setCommand({required String command}) async {
+  Future<void> setCommand(String command) async {
     await starPrinter.invokeMethod("setCommand", {
       "portName": portName,
       "command": command,
     });
   }
 
-  closeReceipt() async {
+  Future<void> setFontSize(double size) async {
+    await starPrinter
+        .invokeMethod("setFontSize", {"portName": portName, "size": size});
+  }
+
+  Future<void> setFontSizeSmall() async {
+    if (text) {
+      setCommand('\x1B\x68\x00\x1B\x57\x00');
+    } else {
+      setFontSize(24.5);
+    }
+  }
+
+  Future<void> setFontSizeMedium() async {
+    if (text) {
+      setCommand('\x1B\x68\x00\x1B\x57\x01');
+    } else {
+      setFontSize(26.5);
+    }
+  }
+
+  Future<void> setFontSizeLarge() async {
+    if (text) {
+      setCommand('\x1B\x68\x01\x1B\x57\x01');
+    } else {
+      setFontSize(29);
+    }
+  }
+
+  Future<void> closeReceipt() async {
     await starPrinter.invokeMethod("closeReceipt", {
       "portName": portName,
     });
   }
 
+  Future<Map<dynamic, dynamic>> print(double delay, int retry) async {
+    return await starPrinter.invokeMethod(
+        "printReceipt", {"portName": portName, "delay": delay, "retry": retry});
+  }
 }

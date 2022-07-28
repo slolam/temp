@@ -33,16 +33,23 @@ FlutterMethodChannel* channel;
     
     if ([call.method  isEqual: @"searchPrinters"]) {
         [Printer searchPrinters:^(NSArray<PrinterInfo *> *searchData) {
-            NSData *data = [NSJSONSerialization dataWithJSONObject:searchData options:0 error:nil];
-
-            NSString *searchPrinters = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            result(searchPrinters);
+            
+            NSMutableArray *printers = [NSMutableArray init];
+            
+            for (PrinterInfo *printer in searchData) {
+                [printers addObject:@{
+                    @"modelName": printer.modelName,
+                    @"macAddress": printer.macAddress,
+                    @"portName": printer.portName
+                }];
+            }
+            result(printers);
         }];
     } else if ([call.method  isEqual: @"getPrinter"]){
         NSString *portName = call.arguments[@"portName"];
-        int timeOut = call.arguments[@"timeOut"];
+        NSNumber *timeOut = call.arguments[@"timeOut"];
 
-        Printer *printer = [Printer getPrinter:portName timeout:timeOut];
+        Printer *printer = [Printer getPrinter:portName timeout:[timeOut intValue]];
         PrinterReceipt *printerReceipt = [[PrinterReceipt alloc] initWithPrinter:printer];
         [printerReceipts setValue:printerReceipt forKey:portName];
         result(portName);
@@ -50,10 +57,10 @@ FlutterMethodChannel* channel;
     } else if ([call.method  isEqual: @"createReceipt"]){
         NSString *portName = call.arguments[@"portName"];
         bool textValue = call.arguments[@"text"];
-        int paperSize = call.arguments[@"paperSize"];
+        NSNumber *paperSize = call.arguments[@"paperSize"];
 
         PrinterReceipt *printerReceipt = [printerReceipts objectForKey:portName];
-        [printerReceipt.printer createReceiptText:textValue PaperSize:paperSize Handler:^(Receipt *receipt) {
+        [printerReceipt.printer createReceiptText:textValue PaperSize:[paperSize intValue] Handler:^(Receipt *receipt) {
             printerReceipt.receipt = receipt;
             result(portName);
         }];
@@ -62,118 +69,154 @@ FlutterMethodChannel* channel;
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addAlignLeft];
+        result(nil);
 
     } else if([call.method  isEqual: @"addAlignRight"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addAlignRight];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addAlignCenter"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addAlignCenter];
+        result(nil);
 
     } else if ([call.method  isEqual: @"setBlackColor"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt setBlackColor];
+        result(nil);
 
     } else if ([call.method  isEqual: @"setRedColor"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt setRedColor];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addText:value];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addDoubleText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addDoubleText:value];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addBoldText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addBoldText:value];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addUnderlinedText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addUnderlinedText:value];
+        result(nil);
 
     }else if ([call.method  isEqual: @"addInverseText"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addInverseText:value];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addLine"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addLine];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addImage"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         FlutterStandardTypedData *imgBytes = call.arguments[@"bytes"];
-        int width = call.arguments[@"width"];
+        NSNumber *width = call.arguments[@"width"];
         UIImage *imageData = [UIImage imageWithData:imgBytes.data];
-        [receipt.receipt addImage:imageData width:width];
+        [receipt.receipt addImage:imageData width:[width intValue]];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addBarcode"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
-        int height = call.arguments[@"height"];
-        [receipt.receipt addBarcode:value height:height];
+        NSNumber *height = call.arguments[@"height"];
+        [receipt.receipt addBarcode:value height:[height intValue]];
+        result(nil);
 
     } else if ([call.method  isEqual: @"addQrCode"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *value = call.arguments[@"value"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt addQrCode:value];
+        result(nil);
         
     } else if ([call.method  isEqual: @"openCashDrawer"]){
         NSString *portName = call.arguments[@"portName"];
-        int drawer = call.arguments[@"drawer"];
+        NSNumber *drawer = call.arguments[@"drawer"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
-        [receipt.receipt openCashDrawer:drawer];
+        [receipt.receipt openCashDrawer:[drawer intValue]];
+        result(nil);
         
     } else if ([call.method  isEqual: @"cutPaper"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt cutPaper];
+        result(nil);
         
     } else if ([call.method  isEqual: @"closeReceipt"]){
         NSString *portName = call.arguments[@"portName"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt closeReceipt];
+        result(nil);
         
     } else if ([call.method  isEqual: @"setCommand"]){
         NSString *portName = call.arguments[@"portName"];
         NSString *command = call.arguments[@"command"];
         PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
         [receipt.receipt setCommand:command];
+        result(nil);
+        
+    } else if ([call.method  isEqual: @"setFontSize"]){
+        NSString *portName = call.arguments[@"portName"];
+        NSNumber *size = call.arguments[@"size"];
+        PrinterReceipt *receipt = [printerReceipts objectForKey:portName];
+        [receipt.receipt setFontSize: [size doubleValue]];
+        result(nil);
         
     } else if ([call.method  isEqual: @"printReceipt"]){
         NSString *portName = call.arguments[@"portName"];
-        int delay = call.arguments[@"delay"];
-        int retry = call.arguments[@"retry"];
+        NSNumber *delay = call.arguments[@"delay"];
+        NSNumber *retry = call.arguments[@"retry"];
+        NSLog(@"printReceipt called");
         PrinterReceipt *printer = [printerReceipts objectForKey:portName];
-        [printer.printer printReceipt:printer.receipt withDelay:delay andRetry:retry onSuccess:^(PrinterStatus *printerStatus) {
-            NSData *data = [NSJSONSerialization dataWithJSONObject:printerStatus options:0 error:nil];
-            NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            result(printeResult);
+        [printer.printer printReceipt:printer.receipt withDelay:[delay doubleValue] andRetry:[retry intValue] onSuccess:^(PrinterStatus *printerStatus) {
+            NSDictionary *status = @{
+                @"offline": [NSNumber numberWithBool:printerStatus.offline],
+                @"error": printerStatus.error,
+                @"outOfPaper": [NSNumber numberWithBool: printerStatus.outOfPaper],
+                @"paperJam": [NSNumber numberWithBool: printerStatus.paperJam],
+                @"printed": [NSNumber numberWithBool: printerStatus.printed]
+            };
+            result(status);
         } onFail:^(PrinterStatus *printerStatus) {
-            NSData *data = [NSJSONSerialization dataWithJSONObject:printerStatus options:0 error:nil];
-            NSString *printeResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            result(printeResult);
+            NSDictionary *status = @{
+                @"offline": [NSNumber numberWithBool:printerStatus.offline],
+                @"error": printerStatus.error,
+                @"outOfPaper": [NSNumber numberWithBool: printerStatus.outOfPaper],
+                @"paperJam": [NSNumber numberWithBool: printerStatus.paperJam],
+                @"printed": [NSNumber numberWithBool: printerStatus.printed]
+            };
+            result(status);
         }];
     } else if ([call.method  isEqual: @"connect"]){
         NSString *portName = call.arguments[@"portName"];
@@ -183,9 +226,14 @@ FlutterMethodChannel* channel;
             [data setValue:code forKey:@"code"];
             [channel invokeMethod:@"onBarcodeRead" arguments:data];
         }];
+        result(nil);
     } else if ([call.method  isEqual: @"disconnect"]){
         NSString *portName = call.arguments[@"portName"];
         [barcodeReader disconnect];
+        barcodeReader = nil;
+        result(nil);
+    } else {
+
     }
 }
 
