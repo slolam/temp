@@ -198,26 +198,23 @@ FlutterMethodChannel* channel;
         NSNumber *delay = call.arguments[@"delay"];
         NSNumber *retry = call.arguments[@"retry"];
         NSLog(@"printReceipt called");
+        void (^responseBlock) (PrinterStatus *)  = ^(PrinterStatus * printerStatus) {
+            NSMutableDictionary *status = [[NSMutableDictionary alloc] init];
+            [status addEntriesFromDictionary: @{
+                @"offline": [NSNumber numberWithBool:printerStatus.offline],
+                //@"error": printerStatus.error,
+                @"outOfPaper": [NSNumber numberWithBool: printerStatus.outOfPaper],
+                @"paperJam": [NSNumber numberWithBool: printerStatus.paperJam],
+                @"printed": [NSNumber numberWithBool: printerStatus.printed]
+            }];
+            
+            if (printerStatus.error != nil) {
+                [status setValue:printerStatus.error forKeyPath:@"error"];
+            }
+            result(status);
+        };
         PrinterReceipt *printer = [printerReceipts objectForKey:portName];
-        [printer.printer printReceipt:printer.receipt withDelay:[delay doubleValue] andRetry:[retry intValue] onSuccess:^(PrinterStatus *printerStatus) {
-            NSDictionary *status = @{
-                @"offline": [NSNumber numberWithBool:printerStatus.offline],
-                @"error": printerStatus.error,
-                @"outOfPaper": [NSNumber numberWithBool: printerStatus.outOfPaper],
-                @"paperJam": [NSNumber numberWithBool: printerStatus.paperJam],
-                @"printed": [NSNumber numberWithBool: printerStatus.printed]
-            };
-            result(status);
-        } onFail:^(PrinterStatus *printerStatus) {
-            NSDictionary *status = @{
-                @"offline": [NSNumber numberWithBool:printerStatus.offline],
-                @"error": printerStatus.error,
-                @"outOfPaper": [NSNumber numberWithBool: printerStatus.outOfPaper],
-                @"paperJam": [NSNumber numberWithBool: printerStatus.paperJam],
-                @"printed": [NSNumber numberWithBool: printerStatus.printed]
-            };
-            result(status);
-        }];
+        [printer.printer printReceipt:printer.receipt withDelay:[delay doubleValue] andRetry:[retry intValue] onSuccess:responseBlock onFail:responseBlock];
     } else if ([call.method  isEqual: @"connect"]){
         NSString *portName = call.arguments[@"portName"];
         barcodeReader = [[BarcodeScanner alloc] initWithPortName:portName];
@@ -228,7 +225,7 @@ FlutterMethodChannel* channel;
         }];
         result(nil);
     } else if ([call.method  isEqual: @"disconnect"]){
-        NSString *portName = call.arguments[@"portName"];
+        //NSString *portName = call.arguments[@"portName"];
         [barcodeReader disconnect];
         barcodeReader = nil;
         result(nil);
