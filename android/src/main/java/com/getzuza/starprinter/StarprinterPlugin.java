@@ -24,7 +24,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 
 /** StarprinterPlugin */
 public class StarprinterPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
-  private static final String Class = "Plugin";
+  private static final String Class = "StarprinterPlugin";
   class PrinterReceipt {
     public Printer printer;
     public Receipt receipt;
